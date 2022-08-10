@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import userRouter from './routers/userRouter.js';
 import cookieParser from 'cookie-parser';
+import PostRouter from './routers/PostRouter.js'
 
 dotenv.config();
 
