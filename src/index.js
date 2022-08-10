@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import PostRouter from './routers/PostRouter.js'
 
 dotenv.config();
 
@@ -14,6 +15,11 @@ server.use(express.json());
 // Routers session
 // server.use()
 
+
+
+// Routers Posts
+server.use(PostRouter)
+
 server.listen(PORT, () => {
-    console.log("It's alive!");
+    console.log("It's alive! port:" + PORT);
 })
