@@ -20,3 +20,24 @@ export async function ShowPosts(req, res) {
     }
 
 }
+
+export async function CreatePost(req, res) {
+
+    try {
+
+        console.log('entrei')
+
+        const userId = 1
+
+        const { url, description } = req.body
+
+        await PostRepository.createMyPost(userId, url, description);
+
+        return res.send(201)
+    }
+    catch {
+        console.log('deuruim')
+        return res.send(500)
+    }
+
+}

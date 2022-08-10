@@ -8,8 +8,16 @@ async function getAllPosts() {
         ORDER BY posts."createdAt" DESC`)
 }
 
+async function createMyPost(userId, url, description) {
+    return connection.query(`
+        INSERT INTO posts ("userId",url,description)
+        values ($1,$2,$3)`,
+        [userId, url, description])
+}
+
 const PostRepository = {
-    getAllPosts
+    getAllPosts,
+    createMyPost
 };
 
 export default PostRepository;
