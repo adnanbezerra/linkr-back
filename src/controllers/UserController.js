@@ -23,5 +23,5 @@ export async function postSignin(req, res) {
 
     const token = jwt.sign(userInfo, jwtKey, tokenConfig);
 
-    res.cookie('token', token, {maxAge: ONE_WEEK_IN_SECONDS}).sendStatus(200);
+    res.status(200).send(token);
 }

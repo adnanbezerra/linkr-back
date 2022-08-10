@@ -12,4 +12,4 @@ CREATE TABLE posts (
 	"url" TEXT UNIQUE NOT NULL,
 	"description" TEXT,
 	"createdAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
-)
+);
