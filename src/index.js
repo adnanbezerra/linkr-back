@@ -20,6 +20,6 @@ server.use(express.json());
 // Routers Posts
 server.use(PostRouter)
 
-server.listen(PORT, () => {
+server.listen(process.env.PORT, () => {
     console.log("It's alive! port:" + PORT);
 })

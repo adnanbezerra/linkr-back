@@ -1,21 +1,23 @@
 import PostRepository from '../repository/PostRepository.js'
-import connection from "../database/database.js";
 
 export async function ShowPosts(req, res) {
 
-    try {
+    console.log('entrei')
+    return res.send(200)
 
-        // const id = 
+    // try {
 
-        const { urlPreview, description } = req.body
+    //     // const id = 
 
-        const { rows: allPosts } = await PostRepository.getAllPosts();
+    //     const { urlPreview, description } = req.body
 
-        return res.status(201).send(allPosts)
-    }
-    catch {
-        console.log('cheguei')
-        return res.send(500)
-    }
+    //     const { rows: allPosts } = await PostRepository.getAllPosts();
+
+    //     return res.status(201).send(allPosts)
+    // }
+    // catch {
+    //     console.log('cheguei')
+    //     return res.send(500)
+    // }
 
 }
