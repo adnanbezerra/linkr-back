@@ -4,8 +4,6 @@ export async function ShowPosts(req, res) {
 
     try {
 
-        console.log('entrei')
-
         // const id = 
 
         const { urlPreview, description } = req.body
@@ -15,7 +13,6 @@ export async function ShowPosts(req, res) {
         return res.status(201).send(allPosts)
     }
     catch {
-        console.log('cheguei')
         return res.send(500)
     }
 

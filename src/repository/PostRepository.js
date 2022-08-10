@@ -3,8 +3,9 @@ import connection from "../database/database.js";
 
 async function getAllPosts() {
     return connection.query(`
-        SELECT * 
+        SELECT posts.id,posts.url,posts.description,users.name 
         FROM posts
+        JOIN users ON users.id=posts."userId"
         ORDER BY posts."createdAt" DESC`)
 }
 
