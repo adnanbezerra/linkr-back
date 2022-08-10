@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { ShowPosts } from "../controllers/PostController.js";
+import { DeletePost, ShowPosts } from "../controllers/PostController.js";
 
 const postRouter = Router();
 
 postRouter.get('/timeline', ShowPosts)
+postRouter.delete('/post/:id', DeletePost)
 
 export default postRouter;
 

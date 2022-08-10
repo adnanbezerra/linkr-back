@@ -8,8 +8,18 @@ async function getAllPosts() {
         ORDER BY posts."createdAt" DESC`)
 }
 
+async function deletePostById(id) {
+    return connection.query(
+        `
+        DELETE FROM posts
+        WHERE id = $1
+        `, [id]
+    )
+}
+
 const PostRepository = {
-    getAllPosts
+    getAllPosts,
+    deletePostById
 };
 
 export default PostRepository;
