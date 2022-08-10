@@ -1,25 +1,26 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import PostRouter from './routers/PostRouter.js'
+import userRouter from './routers/userRouter.js';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
-// const PORT = process.env.PORT;
-const PORT = 5000;
+const PORT = process.env.PORT;
 
 const server = express();
 server.use(cors());
 server.use(express.json());
+server.use(cookieParser());
 
 // Routers session
-// server.use()
+server.use(userRouter);
 
 
 
 // Routers Posts
 server.use(PostRouter)
 
-server.listen(process.env.PORT, () => {
-    console.log("It's alive! port:" + PORT);
+server.listen(PORT, () => {
+    console.log(`It's alive on port ${PORT}`);
 })
