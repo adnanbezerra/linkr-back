@@ -32,4 +32,3 @@ CREATE TABLE hashtags_posts (
     "postId" integer not null references "posts"("id"),
     "hashtagId" integer not null references "hashtags"("id")
 );
-
