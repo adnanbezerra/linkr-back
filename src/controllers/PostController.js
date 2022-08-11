@@ -90,12 +90,7 @@ export async function CreatePost(req, res) {
                     titlePreview: metadata.title,
                     descriptionPreview: metadata.description
                 }
-                // await PostRepository.createMyPost(body); 
-                await connection.query(`
-                INSERT INTO posts ("userId",url,description,"imagePreview","titlePreview")
-                values ($1,$2,$3,$4,$5)`,
-                    [userId, url, description, body.imagePreview, body.titlePreview])
-                console.log(body)
+                await PostRepository.createMyPost(body);
                 return res.send(body)
             },
             function (error) { // failure handler
