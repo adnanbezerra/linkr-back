@@ -17,9 +17,26 @@ async function createMyPost(userId, url, description) {
         [userId, url, description])
 }
 
+async function deletePostById(id) {
+    return connection.query(
+        `
+        DELETE FROM posts
+        WHERE id = $1
+        `, [id]
+    )
+}
+
+async function compareUserAndIdPost(userId, idPost){
+    return connection.query( `
+        SELECT * FROM posts
+        WHERE "userId" = $1 AND id = $2
+    `, [userId, idPost])
+}
 
 const PostRepository = {
     getAllPosts,
+    deletePostById,
+    compareUserAndIdPost,
     createMyPost
 };
 

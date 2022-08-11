@@ -11,3 +11,7 @@ export async function postUser(newUser) {
 export async function getUserFromEmail(email) {
     return connection.query(`SELECT * FROM users WHERE email = $1`, [email]);
 }
+
+export async function getUserById(id) {
+    return connection.query(`SELECT * FROM users WHERE id=$1`, [id]);
+}

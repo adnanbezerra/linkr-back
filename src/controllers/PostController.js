@@ -12,9 +12,7 @@ import urlMetadata from 'url-metadata'
 //     })
 
 export async function ShowPosts(req, res) {
-
     try {
-
         // const id = 
 
         const { urlPreview, description } = req.body
@@ -80,7 +78,21 @@ export async function CreatePost(req, res) {
     }
     catch {
         console.log('deuruim')
+
         return res.send(500)
+    }
+
+}
+
+export async function DeletePost(req, res){
+    try{
+        const { id } = req.params;
+        await PostRepository.deletePostById(id)
+        res.sendStatus(200)
+    } 
+    catch (err){
+        console.log(err)
+        res.sendStatus(500)
     }
 
 }
