@@ -1,8 +1,7 @@
 import { Router } from "express";
-import { CreatePost, ShowPosts } from "../controllers/PostController.js";
+import { CreatePost, ShowPosts, DeletePost } from "../controllers/PostController.js";
 import { validateSchema } from "../middlewares/ValidateSchema.js";
 import urlSchema from "../schemas/PostSchema.js";
-import { DeletePost, ShowPosts } from "../controllers/PostController.js";
 import { validatingToken } from "../middlewares/ValidateToken.js";
 import { ValidateUserAndPost } from "../middlewares/ValidateUserAndPost.js";
 

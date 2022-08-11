@@ -1,6 +1,6 @@
 import PostRepository from '../repository/PostRepository.js'
 
-import urlMetadata from 'url-metadata'
+// import urlMetadata from 'url-metadata'
 
 
 // urlMetadata('https://www.youtube.com/watch?v=V9iLPwaYgtw').then(
@@ -86,7 +86,10 @@ export async function CreatePost(req, res) {
 
 export async function DeletePost(req, res){
     try{
-        const { id } = req.params;
+        const id = req.params.id;
+        console.log(id)
+        await PostRepository.deletePostLikes(id)
+        await PostRepository.deletePostHashtags(id)
         await PostRepository.deletePostById(id)
         res.sendStatus(200)
     } 
