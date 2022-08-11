@@ -1,4 +1,5 @@
 import connection from "../database/database.js";
+import urlMetadata from 'url-metadata'
 
 
 async function getAllPosts() {
@@ -6,7 +7,7 @@ async function getAllPosts() {
         SELECT posts.id,posts.url,posts.description,users.name 
         FROM posts
         JOIN users ON users.id=posts."userId"
-        ORDER BY posts."createdAt" DESC`)
+        ORDER BY posts."createdAt" DESC LIMIT 20`)
 }
 
 async function createMyPost(userId, url, description) {
@@ -15,6 +16,7 @@ async function createMyPost(userId, url, description) {
         values ($1,$2,$3)`,
         [userId, url, description])
 }
+
 
 const PostRepository = {
     getAllPosts,
