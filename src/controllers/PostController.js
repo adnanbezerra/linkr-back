@@ -1,9 +1,6 @@
 import PostRepository from '../repository/PostRepository.js'
-
 import connection from '../database/database.js';
-
 import urlMetadata from 'url-metadata'
-
 
 // urlMetadata('https://www.youtube.com/watch?v=V9iLPwaYgtw').then(
 //     function (metadata) { // success handler
@@ -107,9 +104,13 @@ export async function CreatePost(req, res) {
 
 }
 
-export async function DeletePost(req, res) {
-    try {
-        const { id } = req.params;
+
+export async function DeletePost(req, res){
+    try{
+        const id = req.params.id;
+        console.log(id)
+        await PostRepository.deletePostLikes(id)
+        await PostRepository.deletePostHashtags(id)
         await PostRepository.deletePostById(id)
         res.sendStatus(200)
     }
