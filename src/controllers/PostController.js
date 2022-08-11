@@ -1,5 +1,7 @@
 import PostRepository from '../repository/PostRepository.js'
 
+import connection from '../database/database.js';
+
 import urlMetadata from 'url-metadata'
 
 
@@ -72,9 +74,35 @@ export async function CreatePost(req, res) {
 
         const { url, description } = req.body
 
-        await PostRepository.createMyPost(userId, url, description);
 
-        return res.send(201)
+        // const imagePreview = "/images/branding/googleg/1x/googleg_standard_color_128dp.png"
+        // const titlePreview = 'Google'
+
+        // const descriptionPreview = 
+
+        urlMetadata(url).then(
+            async function (metadata) { // success handler
+                const body = {
+                    userId,
+                    url,
+                    description,
+                    imagePreview: metadata.image,
+                    titlePreview: metadata.title,
+                    descriptionPreview: metadata.description
+                }
+                // await PostRepository.createMyPost(body);
+                await connection.query(`
+                INSERT INTO posts ("userId",url,description,"imagePreview","titlePreview")
+                values ($1,$2,$3,$4,$5)`,
+                    [userId, url, description, body.imagePreview, body.titlePreview])
+                console.log(body)
+                return res.send(body)
+            },
+            function (error) { // failure handler
+                return res.send(error)
+            })
+
+        // return res.send(201)
     }
     catch {
         console.log('deuruim')
@@ -84,13 +112,13 @@ export async function CreatePost(req, res) {
 
 }
 
-export async function DeletePost(req, res){
-    try{
+export async function DeletePost(req, res) {
+    try {
         const { id } = req.params;
         await PostRepository.deletePostById(id)
         res.sendStatus(200)
-    } 
-    catch (err){
+    }
+    catch (err) {
         console.log(err)
         res.sendStatus(500)
     }

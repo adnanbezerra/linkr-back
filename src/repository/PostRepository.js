@@ -4,17 +4,17 @@ import urlMetadata from 'url-metadata'
 
 async function getAllPosts() {
     return connection.query(`
-        SELECT posts.id,posts.url,posts.description,users.name 
+        SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",posts."descriptionPreview",users.name
         FROM posts
         JOIN users ON users.id=posts."userId"
         ORDER BY posts."createdAt" DESC LIMIT 20`)
 }
 
-async function createMyPost(userId, url, description) {
+async function createMyPost(body) {
     return connection.query(`
-        INSERT INTO posts ("userId",url,description)
-        values ($1,$2,$3)`,
-        [userId, url, description])
+        INSERT INTO posts ("userId",url,description,"imagePreview","titlepreview","descriptionPreview)
+        values ($1,$2,$3,$4,$5,$6)`,
+        [body.userId, body.url, body.description, body.imagePreview, body.titlePreview, body.descriptionPreview])
 }
 
 async function deletePostById(id) {
@@ -26,8 +26,8 @@ async function deletePostById(id) {
     )
 }
 
-async function compareUserAndIdPost(userId, idPost){
-    return connection.query( `
+async function compareUserAndIdPost(userId, idPost) {
+    return connection.query(`
         SELECT * FROM posts
         WHERE "userId" = $1 AND id = $2
     `, [userId, idPost])
