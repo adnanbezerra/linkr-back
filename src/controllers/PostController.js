@@ -86,16 +86,15 @@ export async function CreatePost(req, res) {
 
 export async function DeletePost(req, res){
     try{
-        const id = req.params.id;
-        console.log(id)
-        await PostRepository.deletePostLikes(id)
-        await PostRepository.deletePostHashtags(id)
-        await PostRepository.deletePostById(id)
-        res.sendStatus(200)
+        const { idPost } = req.params;
+        await PostRepository.deletePostLikes(idPost)
+        await PostRepository.deletePostHashtags(idPost)
+        await PostRepository.deletePostById(idPost)
+        const { rows: allPosts } = await PostRepository.getAllPosts();
+        res.status(200).send(allPosts)
     } 
     catch (err){
         console.log(err)
         res.sendStatus(500)
     }
-
 }

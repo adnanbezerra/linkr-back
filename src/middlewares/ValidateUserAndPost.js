@@ -4,7 +4,7 @@ export async function ValidateUserAndPost(req, res, next){
     const userId = res.locals.userId
     const id = req.params.idPost;
     try {
-        const compare = await PostRepository.compareUserAndIdPost(userId, id)
+        const compare= await PostRepository.compareUserAndIdPost(userId, id)
         if (compare.rowCount === 0) {
             return res.sendStatus(404)
         } 
