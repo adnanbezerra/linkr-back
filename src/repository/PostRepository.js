@@ -17,9 +17,17 @@ async function deletePostById(id) {
     )
 }
 
+async function compareUserAndIdPost(userId, idPost){
+    return connection.query( `
+        SELECT * FROM posts
+        WHERE "userId" = $1 AND id = $2
+    `, [userId, idPost])
+}
+
 const PostRepository = {
     getAllPosts,
-    deletePostById
+    deletePostById,
+    compareUserAndIdPost
 };
 
 export default PostRepository;
