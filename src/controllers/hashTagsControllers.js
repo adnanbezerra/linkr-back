@@ -19,3 +19,12 @@ export async function getTrends(req,res){
         return res.sendStatus(500);
     }
 }
+export async function getPostsByTag(req,res){
+    const {tagName} = req.params;
+    try{
+        const {rows: posts} = await hashTagsRepository.getPostsByTag(tagName);
+        res.send(posts);
+    }catch(error){
+        return res.sendStatus(500);
+    }
+}
