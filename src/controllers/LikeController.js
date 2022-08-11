@@ -16,7 +16,8 @@ export async function cancelLike(req, res){
 
 export async function Like(req, res){
     const userId = res.locals.userId
-    const { idPost } = req.body;
+    const { idPost } = req.params;
+
     try{
         await LikeRepository.createLike(idPost, userId)
         res.sendStatus(200)

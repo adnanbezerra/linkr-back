@@ -2,8 +2,7 @@ import PostRepository from '../repository/PostRepository.js';
 
 export async function ValidateUserAndPost(req, res, next){
     const userId = res.locals.userId
-    const id = req.params.id;
-    console.log(id)
+    const id = req.params.idPost;
     try {
         const compare = await PostRepository.compareUserAndIdPost(userId, id)
         if (compare.rowCount === 0) {

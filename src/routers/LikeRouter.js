@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { validatingToken } from "../middlewares/ValidateToken.js";
 import { Like, cancelLike } from "../controllers/LikeController.js";
+import { ValidatePost, ValidateLikeUser, ValidateCreateLike } from "../middlewares/ValidateLike.js";
 
-const router = Router();
+const likeRouter = Router();
 
-router.post('/like', validatingToken, Like);
-router.delete('/like/:postId', validatingToken, cancelLike);
-router.get('/likes/:postId', validatingToken);
+likeRouter.post('/like/:idPost', validatingToken, ValidatePost, ValidateCreateLike, Like);
+likeRouter.delete('/like/:idPost', validatingToken, ValidateLikeUser , cancelLike);
+likeRouter.get('/likes/:idPost', validatingToken);
 
-export default router;
+export default likeRouter ;
