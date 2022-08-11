@@ -11,8 +11,11 @@ CREATE TABLE users (
 CREATE TABLE posts (
 	"id" SERIAL PRIMARY KEY UNIQUE NOT NULL,
 	"userId" INTEGER NOT NULL REFERENCES "users"("id"),
-	"url" TEXT UNIQUE NOT NULL,
+	"url" TEXT NOT NULL,
 	"description" TEXT,
+    "imagePreview" TEXT NOT NULL,
+    "titlePreview" TEXT,
+    "descriptionPreview" TEXT,
 	"createdAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
  );
  
