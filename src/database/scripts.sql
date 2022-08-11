@@ -14,9 +14,9 @@ CREATE TABLE posts (
 	"url" TEXT UNIQUE NOT NULL,
 	"description" TEXT,
 	"createdAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
-);
-
---esboço tabela likes
+ );
+ 
+ --esboço tabela likes
 CREATE TABLE likes(
     id serial primary key,
     "likerId" integer not null references "users"("id"),
@@ -32,4 +32,3 @@ CREATE TABLE hashtags_posts (
     "postId" integer not null references "posts"("id"),
     "hashtagId" integer not null references "hashtags"("id")
 );
-

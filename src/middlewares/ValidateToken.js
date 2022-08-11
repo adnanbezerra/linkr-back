@@ -3,8 +3,6 @@ import connection from '../database/database.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
-
-
 export async function validatingToken(req, res, next) {
 
     try {
