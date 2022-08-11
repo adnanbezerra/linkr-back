@@ -90,7 +90,7 @@ export async function CreatePost(req, res) {
                     titlePreview: metadata.title,
                     descriptionPreview: metadata.description
                 }
-                // await PostRepository.createMyPost(body);
+                // await PostRepository.createMyPost(body); 
                 await connection.query(`
                 INSERT INTO posts ("userId",url,description,"imagePreview","titlePreview")
                 values ($1,$2,$3,$4,$5)`,
