@@ -1,4 +1,4 @@
-import { postUser } from "../repository/userRepository.js";
+import { getUserById, postUser } from "../repository/userRepository.js";
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -27,4 +27,18 @@ export async function postSignin(req, res) {
     const token = jwt.sign(userInfo, jwtKey, tokenConfig);
 
     res.status(200).send(token);
+}
+
+export async function getUserMe(req, res) {
+    try {
+        const id = res.locals.userId;
+        const {rows: userRows} = await getUserById(id);
+
+        const {name, email, imageUrl} = userRows[0];
+        const user = {name, email, imageUrl}
+
+        res.status(200).send(user);
+    } catch (error) {
+        console.error(error);
+    }
 }
