@@ -6,7 +6,7 @@ export async function ValidateUserAndPost(req, res, next){
     try {
         const compare= await PostRepository.compareUserAndIdPost(userId, id)
         if (compare.rowCount === 0) {
-            return res.sendStatus(404)
+            return res.status(401).send("Você não pode deletar esse post")
         } 
         next();
     } catch(err) {
