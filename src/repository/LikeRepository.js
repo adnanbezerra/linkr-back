@@ -18,12 +18,15 @@ function deleteLike(postId,userId){
 
 }
 
-function infoLikes(postId){
+function infoLikes(postId, userId){
     return connection.query(
     `
-    SELECT count(likes."postId") as "totalLikesPost" FROM likes
-    WHERE "postId" = $1;
-    ` , [postId]
+    SELECT users.name as "whoLiked" FROM likes
+    JOIN users ON users.id = likes."likerId"
+    WHERE likes."postId" = $1 and likes."likerId" != $2
+    ORDER BY likes."createdAt"
+	
+    ` , [postId, userId]
     )
 
 }
