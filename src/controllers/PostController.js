@@ -19,7 +19,7 @@ export async function CreatePost(req, res) {
 
     try {
 
-        const userId = 1
+        const userId = res.locals.userId
 
         const { url, description } = req.body
 
@@ -39,6 +39,8 @@ export async function CreatePost(req, res) {
             function (error) { // failure handler
                 return res.send(error)
             })
+
+        // return res.send(200)
     }
     catch {
         console.log('deuruim')
