@@ -1,10 +1,13 @@
 
+drop TABLE hashtags_posts;
+drop TABLE likes;
+drop TABLE hashtags;
+drop TABLE posts;
+drop TABLE users;
 
 
+INSERT INTO posts ("userId","url","description","imagePreview") VALUES (2,'https://www.jbox.com.br/2021/03/13/fullmetal-alchemist-reimpressao-chega-com-preco-reajustado-em-abril-pela-jbc/','reimpressão do mangá eba','https://i.pinimg.com/originals/a4/90/47/a49047d73e5644961b123aa48790d5c8.jpg');
 
-SELECT hashtags.name FROM hashtags JOIN hashtags_posts ON hashtags_posts."hashtagId" = hashtags.id JOIN posts ON posts.id = hashtags_posts."postId" WHERE posts.id = 1;
-
-SELECT hashtags.name FROM hashtags LEFT JOIN hashtags_posts ON hashtags_posts."hashtagId" = hashtags.id  LEFT JOIN posts ON posts.id = hashtags_posts."postId" GROUP BY hashtags.name ORDER BY COUNT(posts.id) DESC;
-
-
-INSERT INTO hashtags (name) VALUES ('eita');
+INSERT INTO users (name,password,email,"imageUrl") VALUES ('jojo','jojo','jojo@email.com', 'https://i.pinimg.com/originals/a4/90/47/a49047d73e5644961b123aa48790d5c8.jpg');
+INSERT INTO users (name,password,email,"imageUrl") VALUES ('jeje','jeje','jeje@email.com', 'https://i.pinimg.com/originals/a4/90/47/a49047d73e5644961b123aa48790d5c8.jpg');
+INSERT INTO users (name,password,email,"imageUrl") VALUES ('jiji','jiji','jiji@email.com', 'https://i.pinimg.com/originals/a4/90/47/a49047d73e5644961b123aa48790d5c8.jpg');

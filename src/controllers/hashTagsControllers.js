@@ -3,9 +3,11 @@ import urlMetadata from 'url-metadata';
 
 
 export async function getTagsByPostId(req, res) {
-    const { id } = req.params;
+    const { postId } = req.params;
     try {
-        const { rows: hashtags } = await hashTagsRepository.getTagsByPostId(id);
+        
+        const { rows: hashtags } = await hashTagsRepository.getTagsByPostId(postId);
+        
         res.send(hashtags);
     } catch (error) {
         return res.sendStatus(500);

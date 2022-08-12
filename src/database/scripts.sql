@@ -18,6 +18,7 @@ CREATE TABLE posts (
     "descriptionPreview" TEXT,
 	"createdAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
  );
+
  
 
 CREATE TABLE likes(
@@ -35,3 +36,6 @@ CREATE TABLE hashtags_posts (
     "postId" integer not null references "posts"("id"),
     "hashtagId" integer not null references "hashtags"("id")
 );
+
+INSERT INTO hashtags (name) VALUES ('mercado');
+INSERT INTO hashtags_posts ("postId","hashtagId") VALUES (1,2);
