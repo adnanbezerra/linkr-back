@@ -4,7 +4,8 @@ import urlMetadata from 'url-metadata'
 
 async function getAllPosts() {
     return connection.query(`
-        SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",posts."descriptionPreview",users.name
+        SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
+        posts."descriptionPreview",users.name,users."imageUrl"
         FROM posts
         JOIN users ON users.id=posts."userId"
         ORDER BY posts."createdAt" DESC LIMIT 20`)
