@@ -4,17 +4,18 @@ import connection from "../database/database.js";
 
 async function getAllPosts() {
     return connection.query(`
-        SELECT posts.id,posts.url,posts.description,users.name 
+        SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
+        posts."descriptionPreview",users.name,users."imageUrl"
         FROM posts
         JOIN users ON users.id=posts."userId"
         ORDER BY posts."createdAt" DESC LIMIT 20`)
 }
 
-async function createMyPost(userId, url, description) {
+async function createMyPost(body) {
     return connection.query(`
-        INSERT INTO posts ("userId",url,description)
-        values ($1,$2,$3)`,
-        [userId, url, description])
+    INSERT INTO posts ("userId",url,description,"imagePreview","titlePreview","descriptionPreview")
+    values ($1,$2,$3,$4,$5,$6)`,
+        [body.userId, body.url, body.description, body.imagePreview, body.titlePreview, body.descriptionPreview])
 }
 
 async function deletePostById(id) {
@@ -25,7 +26,6 @@ async function deletePostById(id) {
         `, [id]
     )
 }
-
 async function deletePostLikes(id) {
     return connection.query(
         `
