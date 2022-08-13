@@ -7,8 +7,7 @@ export async function ShowPosts(req, res) {
 
         const { rows: allPosts } = await PostRepository.getAllPosts();
 
-        // return res.status(201).send(allPosts)
-        return res.send(201)
+        return res.status(201).send(allPosts)
     }
     catch {
         return res.sendStatus(500)
