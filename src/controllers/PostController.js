@@ -5,7 +5,7 @@ import PostRepository from '../repository/PostRepository.js'
 export async function ShowPosts(req, res) {
     try {
 
-        // const { rows: allPosts } = await PostRepository.getAllPosts();
+        const { rows: allPosts } = await PostRepository.getAllPosts();
 
         // return res.status(201).send(allPosts)
         return res.send(201)
