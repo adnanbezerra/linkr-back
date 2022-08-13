@@ -7,7 +7,7 @@ CREATE TABLE users (
 );
 
 
---esboço tabela posts
+
 CREATE TABLE posts (
 	"id" SERIAL PRIMARY KEY UNIQUE NOT NULL,
 	"userId" INTEGER NOT NULL REFERENCES "users"("id"),
@@ -18,8 +18,9 @@ CREATE TABLE posts (
     "descriptionPreview" TEXT,
 	"createdAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
  );
+
  
- --esboço tabela likes
+
 CREATE TABLE likes(
     id serial primary key,
     "likerId" integer not null references "users"("id"),
@@ -36,3 +37,4 @@ CREATE TABLE hashtags_posts (
     "postId" integer not null references "posts"("id"),
     "hashtagId" integer not null references "hashtags"("id")
 );
+

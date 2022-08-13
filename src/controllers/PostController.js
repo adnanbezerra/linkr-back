@@ -45,7 +45,7 @@ export async function CreatePost(req, res) {
     catch {
         console.log('deuruim')
 
-        return res.send(500)
+        return res.sendStatus(500)
     }
 }
 
