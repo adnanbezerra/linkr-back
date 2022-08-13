@@ -24,10 +24,9 @@ export async function postSignin(req, res) {
 
     const userInfo = { id: userId };
 
-    // const token = jwt.sign(userInfo, jwtKey, tokenConfig);
+    const token = jwt.sign(userInfo, jwtKey, tokenConfig);
 
-    // res.status(200).send(token);
-    return res.send(200)
+    res.status(200).send(token);
 }
 
 export async function getUserMe(req, res) {
