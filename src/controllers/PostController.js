@@ -19,7 +19,7 @@ export async function CreatePost(req, res) {
 
     try {
 
-        const userId = res.locals.userId
+        const userId = res.locals.userId 
 
         const { url, description } = req.body
 
