@@ -22,7 +22,8 @@ CREATE TABLE posts (
 CREATE TABLE likes(
     id serial primary key,
     "likerId" integer not null references "users"("id"),
-    "postId" integer not null references "posts"("id")
+    "postId" integer not null references "posts"("id"),
+    "createdAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE hashtags (

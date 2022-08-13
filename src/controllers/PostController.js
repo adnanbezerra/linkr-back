@@ -1,62 +1,11 @@
 import PostRepository from '../repository/PostRepository.js'
 
-import connection from '../database/database.js';
-
-import urlMetadata from 'url-metadata'
-
-
-// urlMetadata('https://www.youtube.com/watch?v=V9iLPwaYgtw').then(
-//     function (metadata) { // success handler
-//         console.log(metadata)
-//     },
-//     function (error) { // failure handler
-//         console.log(error)
-//     })
+// import urlMetadata from 'url-metadata'
 
 export async function ShowPosts(req, res) {
     try {
-        // const id = 
-
-        const { urlPreview, description } = req.body
 
         const { rows: allPosts } = await PostRepository.getAllPosts();
-
-        // let completePosts = []
-
-        // Promise.all(
-        //     allPosts.map((item) =>
-        //         new Promise(async () => await urlMetadata(`${item.url}`).then(
-        //             (metadata) => {
-        //                 const { image } = metadata
-        //                 completePosts.push({ ...item, urlP: image })
-        //                 console.log(completePosts)
-        //             },
-        //             (error) => { console.log(error) }
-        //         )
-        //         )
-        //     )
-        // )
-
-        // allPosts.map((item) => {
-
-        //     urlMetadata(`${item.url}`).then(
-        //         function (metadata) { // success handler
-        //             completePosts.push(metadata.image)
-        //         },
-        //         function (error) { // failure handler
-        //             completePosts.push(error)
-        //         })
-        // })
-
-        // for (let counter = 0; counter < allPosts.length; counter++) {
-        //     urlMetadata(`${allPosts[0].url}`).then(
-        //         function (metadata) { // success handler
-        //             completePosts.push(metadata.image)
-        //         },
-        //         function (error) { // failure handler
-        //             completePosts.push(error)
-        //         })
-        // }
 
         return res.status(201).send(allPosts)
     }
@@ -70,15 +19,9 @@ export async function CreatePost(req, res) {
 
     try {
 
-        const userId = 1
+        const userId = res.locals.userId
 
         const { url, description } = req.body
-
-
-        // const imagePreview = "/images/branding/googleg/1x/googleg_standard_color_128dp.png"
-        // const titlePreview = 'Google'
-
-        // const descriptionPreview = 
 
         urlMetadata(url).then(
             async function (metadata) { // success handler
@@ -97,25 +40,26 @@ export async function CreatePost(req, res) {
                 return res.send(error)
             })
 
-        // return res.send(201)
+        // return res.send(200)
     }
     catch {
         console.log('deuruim')
 
         return res.send(500)
     }
-
 }
 
-export async function DeletePost(req, res) {
-    try {
-        const { id } = req.params;
-        await PostRepository.deletePostById(id)
-        res.sendStatus(200)
-    }
-    catch (err) {
+export async function DeletePost(req, res){
+    try{
+        const { idPost } = req.params;
+        await PostRepository.deletePostLikes(idPost)
+        await PostRepository.deletePostHashtags(idPost)
+        await PostRepository.deletePostById(idPost)
+        const { rows: allPosts } = await PostRepository.getAllPosts();
+        res.status(200).send(allPosts)
+    } 
+    catch (err){
         console.log(err)
         res.sendStatus(500)
     }
-
 }

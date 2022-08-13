@@ -1,10 +1,11 @@
 import connection from "../database/database.js";
-import urlMetadata from 'url-metadata'
+// import urlMetadata from 'url-metadata'
 
 
 async function getAllPosts() {
     return connection.query(`
-        SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",posts."descriptionPreview",users.name
+        SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
+        posts."descriptionPreview",users.name,users."imageUrl"
         FROM posts
         JOIN users ON users.id=posts."userId"
         ORDER BY posts."createdAt" DESC LIMIT 20`)
@@ -25,9 +26,26 @@ async function deletePostById(id) {
         `, [id]
     )
 }
+async function deletePostLikes(id) {
+    return connection.query(
+        `
+        DELETE FROM likes 
+        WHERE "postId" = $1
+        `, [id]
+    )
+}
 
-async function compareUserAndIdPost(userId, idPost) {
-    return connection.query(`
+async function deletePostHashtags(id) {
+    return connection.query(
+        `
+        DELETE FROM hashtags_posts
+        WHERE "postId" = $1
+        `, [id]
+    )
+}
+
+async function compareUserAndIdPost(userId, idPost){
+    return await connection.query( `
         SELECT * FROM posts
         WHERE "userId" = $1 AND id = $2
     `, [userId, idPost])
@@ -37,7 +55,9 @@ const PostRepository = {
     getAllPosts,
     deletePostById,
     compareUserAndIdPost,
-    createMyPost
+    createMyPost,
+    deletePostHashtags,
+    deletePostLikes
 };
 
 export default PostRepository;
