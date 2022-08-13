@@ -11,7 +11,7 @@ export async function ValidateLogin(req, res, next) {
         const userFromDatabase = loginRows[0];
         res.locals.userId = userFromDatabase.id;
 
-        if (!bcrypt.compareSync(password, userFromDatabase.password)) return res.status(401).send('erro2');
+        if (!bcrypt.compareSync(password, userFromDatabase.password)) return res.status(401).send({ password, n: userFromDatabase.password });
 
         next();
 
