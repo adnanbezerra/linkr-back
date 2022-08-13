@@ -26,26 +26,26 @@ export async function CreatePost(req, res) {
         urlMetadata(url).then(
 
             async function (metadata) { // success handler
-                // const body = {
-                //     userId,
-                //     url,
-                //     description,
-                //     imagePreview: metadata.image,
-                //     titlePreview: metadata.title,
-                //     descriptionPreview: metadata.description
-                // }
-                // await PostRepository.createMyPost(body);
-                return res.status(200).send('deubom')
+                const body = {
+                    userId,
+                    url,
+                    description,
+                    imagePreview: metadata.image,
+                    titlePreview: metadata.title,
+                    descriptionPreview: metadata.description
+                }
+                await PostRepository.createMyPost(body);
+                return res.send(200)
             }
             ,
             function (error) { // failure handler
-                return res.status(404).send(error)
+                return res.send(error)
             }
         )
     }
     catch {
 
-        return res.status(500).send('deurum')
+        return res.sendStatus(500)
     }
 }
 
