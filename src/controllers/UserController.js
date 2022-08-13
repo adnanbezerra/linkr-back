@@ -24,9 +24,10 @@ export async function postSignin(req, res) {
 
     const userInfo = { id: userId };
 
-    const token = jwt.sign(userInfo, jwtKey, tokenConfig);
+    // const token = jwt.sign(userInfo, jwtKey, tokenConfig);
 
-    res.status(200).send(token);
+    // res.status(200).send(token);
+    return res.send(200)
 }
 
 export async function getUserMe(req, res) {
@@ -48,7 +49,7 @@ export async function getUserByName(req, res) {
         const { name } = req.params;
 
         // não era exatamente necessário um middleware, só isso
-        if(name.length < 3) return res.sendStatus(411);
+        if (name.length < 3) return res.sendStatus(411);
 
         const { rows: queryRows } = await getUserFromName(name);
 
