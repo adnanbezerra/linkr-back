@@ -34,7 +34,7 @@ export async function CreatePost(req, res) {
                     titlePreview: metadata.title,
                     descriptionPreview: metadata.description
                 }
-                await PostRepository.createMyPost(body);
+                // await PostRepository.createMyPost(body);
                 return res.status(201).send(body)
             }
             ,
