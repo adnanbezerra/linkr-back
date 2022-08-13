@@ -36,10 +36,12 @@ export async function CreatePost(req, res) {
                 // }
                 // await PostRepository.createMyPost(body);
                 return res.sendStatus(200)
-            },
-            function (error) { // failure handler
-                return res.send(error)
-            })
+            }
+            // ,
+            // function (error) { // failure handler
+            //     return res.send(error)
+            // }
+        )
     }
     catch {
 
