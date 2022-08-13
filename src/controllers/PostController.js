@@ -4,8 +4,8 @@ import PostRepository from '../repository/PostRepository.js'
 
 export async function ShowPosts(req, res) {
     try {
-
-        const { rows: allPosts } = await PostRepository.getAllPosts();
+        const userId = res.locals.userId
+        const { rows: allPosts } = await PostRepository.getAllPosts(userId);
 
         return res.status(201).send(allPosts)
     }
@@ -51,15 +51,32 @@ export async function CreatePost(req, res) {
 
 export async function DeletePost(req, res){
     try{
+        const userId = res.locals.userId
         const { idPost } = req.params;
         await PostRepository.deletePostLikes(idPost)
         await PostRepository.deletePostHashtags(idPost)
         await PostRepository.deletePostById(idPost)
-        const { rows: allPosts } = await PostRepository.getAllPosts();
+        const { rows: allPosts } = await PostRepository.getAllPosts(userId);
         res.status(200).send(allPosts)
     } 
     catch (err){
         console.log(err)
         res.sendStatus(500)
     }
+}
+
+export async function EditPost(req, res){
+    try {
+        const userId = res.locals.userId
+        const {message} = req.body;
+        const { idPost } = req.params;
+        await PostRepository.deletePostHashtags(idPost)
+        await PostRepository.updateDescriptionPost(idPost, message)
+        const { rows: allPosts } = await PostRepository.getAllPosts(userId);
+        res.status(201).send(allPosts)
+    } catch (err){
+        console.log(err)
+        res.sendStatus(500)
+    }
+
 }
