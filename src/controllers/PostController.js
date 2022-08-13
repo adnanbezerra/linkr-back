@@ -35,7 +35,7 @@ export async function CreatePost(req, res) {
                 //     descriptionPreview: metadata.description
                 // }
                 // await PostRepository.createMyPost(body);
-                return res.sendStatus(200)
+                return res.status(200).send('deubom')
             }
             // ,
             // function (error) { // failure handler
