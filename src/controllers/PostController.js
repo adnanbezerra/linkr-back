@@ -23,22 +23,24 @@ export async function CreatePost(req, res) {
 
         const { url, description } = req.body
 
-        urlMetadata(url).then(
-            async function (metadata) { // success handler
-                // const body = {
-                //     userId,
-                //     url,
-                //     description,
-                //     imagePreview: metadata.image,
-                //     titlePreview: metadata.title,
-                //     descriptionPreview: metadata.description
-                // }
-                // await PostRepository.createMyPost(body);
-                return res.send(200)
-            },
-            function (error) { // failure handler
-                return res.send(error)
-            })
+        // urlMetadata(url).then(
+        //     async function (metadata) { // success handler
+        //         // const body = {
+        //         //     userId,
+        //         //     url,
+        //         //     description,
+        //         //     imagePreview: metadata.image,
+        //         //     titlePreview: metadata.title,
+        //         //     descriptionPreview: metadata.description
+        //         // }
+        //         // await PostRepository.createMyPost(body);
+        //         return res.send(200)
+        //     },
+        //     function (error) { // failure handler
+        //         return res.send(error)
+        //     })
+
+        res.status(200).send({ userId, url, description })
     }
     catch {
         console.log('deuruim')
