@@ -27,7 +27,7 @@ export async function CreatePost(req, res) {
 
             async function (metadata) { // success handler
                 const body = {
-                    userId:1,
+                    userId: userId,
                     url,
                     description,
                     imagePreview: metadata.image,

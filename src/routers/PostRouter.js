@@ -8,7 +8,7 @@ import { ValidateUserAndPost } from "../middlewares/ValidateUserAndPost.js";
 const postRouter = Router();
 
 postRouter.get('/timeline', ShowPosts)
-postRouter.post('/timeline', validateSchema(urlSchema), CreatePost)
+postRouter.post('/timeline', validatingToken, validateSchema(urlSchema), CreatePost)
 postRouter.delete('/post/:idPost', validatingToken, ValidateUserAndPost, DeletePost)
 
 export default postRouter;
