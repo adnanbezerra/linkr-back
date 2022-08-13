@@ -48,7 +48,7 @@ export async function getUserByName(req, res) {
         const { name } = req.params;
 
         // não era exatamente necessário um middleware, só isso
-        if(name.length < 3) return res.sendStatus(411);
+        if (name.length < 3) return res.sendStatus(411);
 
         const { rows: queryRows } = await getUserFromName(name);
 
