@@ -9,6 +9,6 @@ const hashtagsRouters = Router();
 
 hashtagsRouters.get('/hashtags/:postId',validatingToken,getTagsByPostId);
 hashtagsRouters.get('/trends',validatingToken, getTrends);
-hashtagsRouters.get('/posts/:hashtag',/*validatingToken,*/getPostsByTag);//mover para rotas de posts depois
+hashtagsRouters.get('/posts/:hashtag',validatingToken, getPostsByTag);//mover para rotas de posts depois
 
 export default hashtagsRouters;

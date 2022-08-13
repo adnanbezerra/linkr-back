@@ -23,9 +23,9 @@ export async function getTrends(req,res){
     }
 }
 export async function getPostsByTag(req, res) {
-    const { tagName } = req.params;
+    const { hashtag } = req.params;
     try {
-        const { rows: posts } = await hashTagsRepository.getPostsByTag(tagName);
+        const { rows: posts } = await hashTagsRepository.getPostsByTag(hashtag);
         res.send(posts);
     } catch (error) {
         return res.sendStatus(500);

@@ -24,7 +24,8 @@ CREATE TABLE posts (
 CREATE TABLE likes(
     id serial primary key,
     "likerId" integer not null references "users"("id"),
-    "postId" integer not null references "posts"("id")
+    "postId" integer not null references "posts"("id"),
+    "createdAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE hashtags (
@@ -37,5 +38,3 @@ CREATE TABLE hashtags_posts (
     "hashtagId" integer not null references "hashtags"("id")
 );
 
-INSERT INTO hashtags (name) VALUES ('mercado');
-INSERT INTO hashtags_posts ("postId","hashtagId") VALUES (1,2);
