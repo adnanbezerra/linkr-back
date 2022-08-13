@@ -24,6 +24,7 @@ export async function CreatePost(req, res) {
         const { url, description } = req.body
 
         urlMetadata(url).then(
+
             async function (metadata) { // success handler
                 // const body = {
                 //     userId,
@@ -39,13 +40,10 @@ export async function CreatePost(req, res) {
             function (error) { // failure handler
                 return res.send(error)
             })
-
-        res.status(200).send({ userId, url, description })
     }
     catch {
-        console.log('deuruim')
 
-        return res.send(500)
+        return res.status(500).send('deurum')
     }
 }
 
