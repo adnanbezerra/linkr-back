@@ -2,13 +2,16 @@ import connection from "../database/database.js";
 // import urlMetadata from 'url-metadata'
 
 
-async function getAllPosts() {
+async function getAllPosts(userId) {
     return connection.query(`
-        SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
-        posts."descriptionPreview",users.name,users."imageUrl"
-        FROM posts
-        JOIN users ON users.id=posts."userId"
-        ORDER BY posts."createdAt" DESC LIMIT 20`)
+    SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
+    posts."descriptionPreview",u.name,u."imageUrl", 
+    CASE WHEN posts."userId" = $1 then 'true' else 'false' end "isMyPost"
+    FROM posts
+    JOIN users u ON u.id=posts."userId" 
+    ORDER BY posts."createdAt" DESC LIMIT 20
+    
+`, [userId])
 }
 
 async function createMyPost(body) {
@@ -51,13 +54,21 @@ async function compareUserAndIdPost(userId, idPost){
     `, [userId, idPost])
 }
 
+async function updateDescriptionPost(idPost, message){
+    return await connection.query( `
+        UPDATE posts SET description = ${`$1`}
+        WHERE posts.id = $2
+    `, [message, idPost])
+}
+
 const PostRepository = {
     getAllPosts,
     deletePostById,
     compareUserAndIdPost,
     createMyPost,
     deletePostHashtags,
-    deletePostLikes
+    deletePostLikes,
+    updateDescriptionPost
 };
 
 export default PostRepository;
