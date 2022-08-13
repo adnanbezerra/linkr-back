@@ -10,7 +10,7 @@ export async function ShowPosts(req, res) {
         return res.status(201).send(allPosts)
     }
     catch {
-        return res.send(500)
+        return res.sendStatus(500)
     }
 
 }
