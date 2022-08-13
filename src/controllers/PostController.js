@@ -25,14 +25,14 @@ export async function CreatePost(req, res) {
 
         urlMetadata(url).then(
             async function (metadata) { // success handler
-                const body = {
-                    userId,
-                    url,
-                    description,
-                    imagePreview: metadata.image,
-                    titlePreview: metadata.title,
-                    descriptionPreview: metadata.description
-                }
+                // const body = {
+                //     userId,
+                //     url,
+                //     description,
+                //     imagePreview: metadata.image,
+                //     titlePreview: metadata.title,
+                //     descriptionPreview: metadata.description
+                // }
                 // await PostRepository.createMyPost(body);
                 return res.send(200)
             },
