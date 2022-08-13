@@ -1,6 +1,6 @@
 import PostRepository from '../repository/PostRepository.js'
 
-// import urlMetadata from 'url-metadata'
+import urlMetadata from 'url-metadata'
 
 export async function ShowPosts(req, res) {
     try {
@@ -37,10 +37,10 @@ export async function CreatePost(req, res) {
                 // await PostRepository.createMyPost(body);
                 return res.status(200).send('deubom')
             }
-            // ,
-            // function (error) { // failure handler
-            //     return res.send(error)
-            // }
+            ,
+            function (error) { // failure handler
+                return res.status(404).send(error)
+            }
         )
     }
     catch {
