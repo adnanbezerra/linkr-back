@@ -19,28 +19,28 @@ export async function CreatePost(req, res) {
 
     try {
 
-        const userId = res.locals.userId
+        // const userId = res.locals.userId
 
-        const { url, description } = req.body
+        // const { url, description } = req.body
 
-        urlMetadata(url).then(
-            async function (metadata) { // success handler
-                const body = {
-                    userId,
-                    url,
-                    description,
-                    imagePreview: metadata.image,
-                    titlePreview: metadata.title,
-                    descriptionPreview: metadata.description
-                }
-                await PostRepository.createMyPost(body);
-                return res.send(body)
-            },
-            function (error) { // failure handler
-                return res.send(error)
-            })
+        // urlMetadata(url).then(
+        //     async function (metadata) { // success handler
+        //         const body = {
+        //             userId,
+        //             url,
+        //             description,
+        //             imagePreview: metadata.image,
+        //             titlePreview: metadata.title,
+        //             descriptionPreview: metadata.description
+        //         }
+        //         await PostRepository.createMyPost(body);
+        //         return res.send(body)
+        //     },
+        //     function (error) { // failure handler
+        //         return res.send(error)
+        //     })
 
-        // return res.send(200)
+        return res.send(200)
     }
     catch {
         console.log('deuruim')
