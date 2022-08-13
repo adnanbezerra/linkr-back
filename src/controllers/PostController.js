@@ -5,9 +5,10 @@ import PostRepository from '../repository/PostRepository.js'
 export async function ShowPosts(req, res) {
     try {
 
-        const { rows: allPosts } = await PostRepository.getAllPosts();
+        // const { rows: allPosts } = await PostRepository.getAllPosts();
 
-        return res.status(201).send(allPosts)
+        // return res.status(201).send(allPosts)
+        return res.send(201)
     }
     catch {
         return res.sendStatus(500)
@@ -49,16 +50,16 @@ export async function CreatePost(req, res) {
     }
 }
 
-export async function DeletePost(req, res){
-    try{
+export async function DeletePost(req, res) {
+    try {
         const { idPost } = req.params;
         await PostRepository.deletePostLikes(idPost)
         await PostRepository.deletePostHashtags(idPost)
         await PostRepository.deletePostById(idPost)
         const { rows: allPosts } = await PostRepository.getAllPosts();
         res.status(200).send(allPosts)
-    } 
-    catch (err){
+    }
+    catch (err) {
         console.log(err)
         res.sendStatus(500)
     }
