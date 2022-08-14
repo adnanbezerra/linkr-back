@@ -29,7 +29,6 @@ export async function CreatePost(req, res) {
         let stringHashs = ''
         let onlyDescription = ''
 
-
         allDescription.map((item) => {
             if (item[0] === '#') {
                 stringHashs += item
