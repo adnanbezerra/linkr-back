@@ -25,13 +25,15 @@ export async function CreatePost(req, res) {
 
         let allDescription = description.split(" ");
 
-        let hashs = []
+        let arrayHashs = []
+        let stringHashs = ''
         let onlyDescription = ''
 
 
-        allDescription.map((item, index) => {
+        allDescription.map((item) => {
             if (item[0] === '#') {
-                hashs.push(item)
+                stringHashs += item
+                arrayHashs.push(item)
             }
             else {
                 onlyDescription += item + " "
@@ -45,6 +47,7 @@ export async function CreatePost(req, res) {
                     userId: userId,
                     url,
                     description: onlyDescription,
+                    hashtags: stringHashs,
                     imagePreview: metadata.image,
                     titlePreview: metadata.title,
                     descriptionPreview: metadata.description
