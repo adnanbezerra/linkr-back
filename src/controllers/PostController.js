@@ -46,7 +46,7 @@ export async function CreatePost(req, res) {
                     titlePreview: metadata.title,
                     descriptionPreview: metadata.description
                 }
-                // await PostRepository.createMyPost(body);
+                await PostRepository.createMyPost(body);
                 const { rows: mypost } = await connection.query(
                     `SELECT * FROM posts
                     WHERE posts."userId"=$1 AND posts.url=$2 AND posts.description=$3`, [userId, url, description])
