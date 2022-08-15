@@ -85,7 +85,7 @@ export async function CreatePost(req, res) {
                 //     }
                 // }
 
-                return res.status(201).send(mypost[0])
+                return res.status(201).send(mypost[0].url)
             }
             ,
             function (error) { // failure handler
