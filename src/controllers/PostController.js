@@ -45,7 +45,10 @@ export async function CreatePost(req, res) {
                     descriptionPreview: metadata.description
                 }
                 await PostRepository.createMyPost(body);
-                return res.status(201).send(body)
+                const { rows: mypost } = await connection.query(
+                    `SELECT * FROM posts
+                    WHERE post."userId"=$1 AND posts.url=$2 AND posts.description=$3`, [userId, url, description])
+                return res.status(201).send(mypost)
             }
             ,
             function (error) { // failure handler
