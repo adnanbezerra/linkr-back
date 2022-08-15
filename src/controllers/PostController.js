@@ -75,23 +75,21 @@ export async function CreatePost(req, res) {
                             idHash: hashExist[0].id
                         }
                     }
-
-                    // const { rows: hashPostExist } = await connection.query(`
-                    // SELECT * FROM hashtags_posts h
-                    // WHERE h."postId"=$1 AND h."hashtagId"=$2)`, [postId, hashId])
-
-                    // if (hashPostExist.length === 0) {
-                    //     await connection.query(`
-                    //     INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [postId, hashId])
-                    // }
-
-                    bodyHash = {
-                        idPost: mypost[0].id,
-                        idHash: hashExist[0].id
+                    else {
+                        bodyHash = {
+                            idPost: mypost[0].id,
+                            idHash: hashExist[0].id
+                        }
                     }
 
-                    await connection.query(`
+                    const { rows: hashPostExist } = await connection.query(`
+                    SELECT * FROM hashtags_posts
+                    WHERE hashtags_posts."postId"=$1 AND hashtags_posts."hashtagId"=$2)`, [bodyHash.idPost, bodyHash.idHash])
+
+                    if (hashPostExist.length === 0) {
+                        await connection.query(`
                         INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [bodyHash.idPost, bodyHash.idHash])
+                    }
                 }
 
                 return res.status(201).send(bodyHash)
