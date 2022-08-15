@@ -75,12 +75,12 @@ export async function CreatePost(req, res) {
                         hashId = hashExist[0].id
                     }
 
-                    await connection.query(`
-                    SELECT * FROM hashtags_posts h
-                    WHERE h."postId"=$1 AND h."hashtagId"=$2)`, [postId, hashId])
+                    // await connection.query(`
+                    // SELECT * FROM hashtags_posts h
+                    // WHERE h."postId"=$1 AND h."hashtagId"=$2)`, [postId, hashId])
                 }
 
-                return res.status(201).send(mypost)
+                return res.status(201).send(postId)
             }
             ,
             function (error) { // failure handler
