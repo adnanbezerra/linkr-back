@@ -1,7 +1,5 @@
 import PostRepository from '../repository/PostRepository.js'
 
-import connection from '../database/database.js';
-
 import urlMetadata from 'url-metadata'
 
 export async function ShowPosts(req, res) {
@@ -79,7 +77,6 @@ export async function CreatePost(req, res) {
                         await PostRepository.insertPostWithHash(bodyHash.idPost, bodyHash.idHash)
                     }
                 }
-
                 return res.status(201).send(body)
             }
             ,
