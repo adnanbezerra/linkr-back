@@ -51,38 +51,34 @@ export async function CreatePost(req, res) {
                     `SELECT * FROM posts
                     WHERE posts."userId"=$1 AND posts.url=$2 AND posts.description=$3`, [userId, url, description])
 
-                const postId = mypost[0]
+                const postId = mypost[0].id
 
-                // const { rows: v } = await connection.query(`
-                //      SELECT * FROM hashtags_posts h
-                //      WHERE h."postId"=$1)`, [postId])
+                let hashId;
 
-                // let hashId;
+                for (let counter = 0; counter < arrayHashs.length; counter++) {
+                    let { rows: hashExist } = await connection.query(
+                        `SELECT * FROM hashtags h
+                        WHERE h.name=$1`, [arrayHashs[counter]]
+                    )
 
-                // for (let counter = 0; counter < arrayHashs.length; counter++) {
-                //     let { rows: hashExist } = await connection.query(
-                //         `SELECT * FROM hashtags h
-                //         WHERE h.name=$1`, [arrayHashs[counter]]
-                //     )
+                    hashId = hashExist[0].id
 
-                //     hashId = hashExist[0].id
+                    if (hashExist.length === 0) {
+                        await connection.query(`
+                        INSERT INTO hashtags (name) VALUES ($1)`, [arrayHashs[counter]])
 
-                //     if (hashExist.length === 0) {
-                //         await connection.query(`
-                //         INSERT INTO hashtags (name) VALUES ($1)`, [arrayHashs[counter]])
+                        let { rows: hashExist } = await connection.query(
+                            `SELECT * FROM hashtags h
+                            WHERE h.name=$1`, [arrayHashs[counter]]
+                        )
 
-                //         let { rows: hashExist } = await connection.query(
-                //             `SELECT * FROM hashtags h
-                //             WHERE h.name=$1`, [arrayHashs[counter]]
-                //         )
+                        hashId = hashExist[0].id
+                    }
 
-                //         hashId = hashExist[0].id
-                //     }
-
-                //     // await connection.query(`
-                //     // SELECT * FROM hashtags_posts h
-                //     // WHERE h."postId"=$1 AND h."hashtagId"=$2)`, [postId, hashId])
-                // }
+                    // await connection.query(`
+                    // SELECT * FROM hashtags_posts h
+                    // WHERE h."postId"=$1 AND h."hashtagId"=$2)`, [postId, hashId])
+                }
 
                 return res.status(201).send('postId')
             }
