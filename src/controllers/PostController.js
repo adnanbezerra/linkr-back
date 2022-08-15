@@ -45,9 +45,9 @@ export async function CreatePost(req, res) {
                     descriptionPreview: metadata.description
                 }
                 // await PostRepository.createMyPost(body);
-                const { rows: mypost } = await connection.query(
-                    `SELECT * FROM posts
-                    WHERE posts."userId"=$1 AND posts.url=$2`, [userId, url])
+                // const { rows: mypost } = await connection.query(
+                //     `SELECT * FROM posts
+                //     WHERE posts."userId"=$1 AND posts.url=$2`, [userId, url])
                 return res.status(201).send(body)
             }
             ,
