@@ -61,10 +61,33 @@ async function updateDescriptionPost(idPost, message) {
     `, [message, idPost])
 }
 
-async function getPostByUserAndHash(idPost, message) {
+async function getPostByUserAndHash(userId, userId, description) {
     return await connection.query(
         `SELECT * FROM posts
         WHERE posts."userId"=$1 AND posts.url=$2 AND posts.description=$3`, [userId, url, description])
+}
+
+async function getHash(arrayHashs) {
+    return await connection.query(
+        `SELECT * FROM hashtags h
+        WHERE h.name=$1`, [arrayHashs]
+    )
+}
+
+async function insertHash(arrayHashs) {
+    return await connection.query(`
+    INSERT INTO hashtags (name) VALUES ($1)`, [arrayHashs])
+}
+
+async function getPostWithHash(idPost, idHash) {
+    return await connection.query(`
+    SELECT * FROM hashtags_posts
+    WHERE hashtags_posts."postId"=$1 AND hashtags_posts."hashtagId"=$2`, [idPost, idHash])
+}
+
+async function insertPostWithHash(idPost, idHash) {
+    return await connection.query(`
+    INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [idPost, idHash])
 }
 
 const PostRepository = {
@@ -75,7 +98,11 @@ const PostRepository = {
     deletePostHashtags,
     deletePostLikes,
     updateDescriptionPost,
-    getPostByUserAndHash
+    getPostByUserAndHash,
+    getHash,
+    insertHash,
+    getPostWithHash,
+    insertPostWithHash
 };
 
 export default PostRepository;

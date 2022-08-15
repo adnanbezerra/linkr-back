@@ -54,19 +54,12 @@ export async function CreatePost(req, res) {
                 for (let counter = 0; counter < arrayHashs.length; counter++) {
                     bodyHash = ''
 
-                    const { rows: hashExist } = await connection.query(
-                        `SELECT * FROM hashtags h
-                        WHERE h.name=$1`, [arrayHashs[counter]]
-                    )
+                    const { rows: hashExist } = await PostRepository.getHash(arrayHashs[counter])
 
                     if (hashExist.length === 0) {
-                        await connection.query(`
-                        INSERT INTO hashtags (name) VALUES ($1)`, [arrayHashs[counter]])
+                        await PostRepository.insertHash(arrayHashs[counter])
 
-                        const { rows: hashExist } = await connection.query(
-                            `SELECT * FROM hashtags h
-                            WHERE h.name=$1`, [arrayHashs[counter]]
-                        )
+                        const { rows: hashExist } = await PostRepository.getHash(arrayHashs[counter])
 
                         bodyHash = {
                             idPost: mypost[0].id,
@@ -80,13 +73,10 @@ export async function CreatePost(req, res) {
                         }
                     }
 
-                    const { rows: hashPostExist } = await connection.query(`
-                    SELECT * FROM hashtags_posts
-                    WHERE hashtags_posts."postId"=$1 AND hashtags_posts."hashtagId"=$2`, [bodyHash.idPost, bodyHash.idHash])
+                    const { rows: hashPostExist } = await PostRepository.getPostWithHash(bodyHash.idPost, bodyHash.idHash)
 
                     if (hashPostExist.length === 0) {
-                        await connection.query(`
-                        INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [bodyHash.idPost, bodyHash.idHash])
+                        await PostRepository.insertPostWithHash(bodyHash.idPost, bodyHash.idHash)
                     }
                 }
 
