@@ -55,8 +55,9 @@ export async function CreatePost(req, res) {
                     `SELECT * FROM hashtags h
                         WHERE h.name=$1`, [arrayHashs[0]]
                 )
+                let bodyHash
 
-                const bodyHash = {
+                bodyHash = {
                     idPost: mypost[0].id,
                     idHash: hashExist[0].id
                 }
