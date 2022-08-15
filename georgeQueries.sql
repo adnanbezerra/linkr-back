@@ -6,7 +6,7 @@ drop TABLE posts;
 drop TABLE users;
 
 
-INSERT INTO posts ("userId","url","description","imagePreview") VALUES (1,'https://www.jbox.com.br/2021/03/13/fullmetal-alchemist-reimpressao-chega-com-preco-reajustado-em-abril-pela-jbc/','ela vamos nos','https://i.pinimg.com/originals/a4/90/47/a49047d73e5644961b123aa48790d5c8.jpg');
+INSERT INTO posts ("userId","url","description","imagePreview") VALUES (1,'https://www.jbox.com.br/2021/03/13/fullmetal-alchemist-reimpressao-chega-com-preco-reajustado-em-abril-pela-jbc/','ela vamos nos #enois #tamonalida','https://i.pinimg.com/originals/a4/90/47/a49047d73e5644961b123aa48790d5c8.jpg');
 
 INSERT INTO hashtags_posts ("")
 INSERT INTO hashtags (name) VALUES ('mPARANGOLE');
