@@ -42,3 +42,18 @@ export async function getUserMe(req, res) {
         console.error(error);
     }
 }
+
+export async function getUser(req, res) {
+    const {id} = req.params;
+    try {
+        
+        const {rows: userRows} = await getUserById(id);
+        console.log(userRows);
+        const {name, imageUrl} = userRows[0];
+        const user = {name, imageUrl};
+
+        res.status(200).send(user);
+    } catch (error) {
+        console.error(error);
+    }
+}

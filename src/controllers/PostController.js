@@ -1,13 +1,25 @@
 import PostRepository from '../repository/PostRepository.js'
 
-// import urlMetadata from 'url-metadata'
+import urlMetadata from 'url-metadata'
 
 export async function ShowPosts(req, res) {
     try {
-
         const { rows: allPosts } = await PostRepository.getAllPosts();
 
         return res.status(201).send(allPosts)
+    }
+    catch {
+        return res.send(500)
+    }
+
+}
+
+export async function gettingPostsByUser(req, res) {
+    const{userId} = req.params;
+    try {
+        const { rows: posts } = await PostRepository.getPostsbyUser(userId);
+
+        return res.status(201).send(posts)
     }
     catch {
         return res.send(500)
@@ -19,10 +31,9 @@ export async function CreatePost(req, res) {
 
     try {
 
-        const userId = res.locals.userId
-
+        const userId = res.locals.userId;
+        
         const { url, description } = req.body
-
         urlMetadata(url).then(
             async function (metadata) { // success handler
                 const body = {
@@ -33,6 +44,7 @@ export async function CreatePost(req, res) {
                     titlePreview: metadata.title,
                     descriptionPreview: metadata.description
                 }
+                console.log('hai');
                 await PostRepository.createMyPost(body);
                 return res.send(body)
             },
