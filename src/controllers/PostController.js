@@ -51,9 +51,9 @@ export async function CreatePost(req, res) {
                     `SELECT * FROM posts
                     WHERE posts."userId"=$1 AND posts.url=$2 AND posts.description=$3`, [userId, url, description])
 
-                // const postId = mypost[0].id
+                const postId = mypost[0].id
 
-                // let hashId;
+                let hashId;
 
                 // for (let counter = 0; counter < arrayHashs.length; counter++) {
                 //     let { rows: hashExist } = await connection.query(
