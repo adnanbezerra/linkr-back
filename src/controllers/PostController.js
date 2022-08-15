@@ -80,7 +80,7 @@ export async function CreatePost(req, res) {
                     // WHERE h."postId"=$1 AND h."hashtagId"=$2)`, [postId, hashId])
                 }
 
-                return res.status(201).send({ postId, hashId })
+                return res.status(201).send(postId)
             }
             ,
             function (error) { // failure handler
