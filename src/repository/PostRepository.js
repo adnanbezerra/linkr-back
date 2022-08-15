@@ -61,7 +61,7 @@ async function updateDescriptionPost(idPost, message) {
     `, [message, idPost])
 }
 
-async function getPostByUserAndHash(userId, userId, description) {
+async function getPostByUserAndHash(userId, url, description) {
     return await connection.query(
         `SELECT * FROM posts
         WHERE posts."userId"=$1 AND posts.url=$2 AND posts.description=$3`, [userId, url, description])
