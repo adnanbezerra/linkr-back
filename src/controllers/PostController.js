@@ -41,7 +41,7 @@ export async function CreatePost(req, res) {
                 const body = {
                     userId: userId,
                     url,
-                    description: description,
+                    description,
                     imagePreview: metadata.image,
                     titlePreview: metadata.title,
                     descriptionPreview: metadata.description
