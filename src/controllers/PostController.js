@@ -51,6 +51,8 @@ export async function CreatePost(req, res) {
                     `SELECT * FROM posts
                     WHERE posts."userId"=$1 AND posts.url=$2 AND posts.description=$3`, [userId, url, description])
 
+                let bodyHash;
+
                 for (let counter = 0; counter < arrayHashs.length; counter++) {
                     let { rows: hashExist } = await connection.query(
                         `SELECT * FROM hashtags h
@@ -80,7 +82,7 @@ export async function CreatePost(req, res) {
                     //     INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [postId, hashId])
                     // }
 
-                    const bodyHash = {
+                    bodyHash = {
                         id: mypost[0].id,
                         hashId: hashExist[0].id
                     }
