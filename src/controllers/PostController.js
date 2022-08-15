@@ -51,41 +51,46 @@ export async function CreatePost(req, res) {
                     `SELECT * FROM posts
                     WHERE posts."userId"=$1 AND posts.url=$2 AND posts.description=$3`, [userId, url, description])
 
-                let bodyHash;
+                const { rows: hashExist } = await connection.query(
+                    `SELECT * FROM hashtags h
+                        WHERE h.name=$1`, [arrayHashs[0]]
+                )
 
-                for (let counter = 0; counter < arrayHashs.length; counter++) {
-                    let { rows: hashExist } = await connection.query(
-                        `SELECT * FROM hashtags h
-                        WHERE h.name=$1`, [arrayHashs[counter]]
-                    )
+                // let bodyHash;
 
-                    if (hashExist.length === 0) {
-                        await connection.query(`
-                        INSERT INTO hashtags (name) VALUES ($1)`, [arrayHashs[counter]])
+                // for (let counter = 0; counter < arrayHashs.length; counter++) {
+                //     let { rows: hashExist } = await connection.query(
+                //         `SELECT * FROM hashtags h
+                //         WHERE h.name=$1`, [arrayHashs[counter]]
+                //     )
 
-                        let { rows: hashExist } = await connection.query(
-                            `SELECT * FROM hashtags h
-                            WHERE h.name=$1`, [arrayHashs[counter]]
-                        )
+                //     if (hashExist.length === 0) {
+                //         await connection.query(`
+                //         INSERT INTO hashtags (name) VALUES ($1)`, [arrayHashs[counter]])
 
-                        hashId = hashExist[0].id
-                    }
+                //         let { rows: hashExist } = await connection.query(
+                //             `SELECT * FROM hashtags h
+                //             WHERE h.name=$1`, [arrayHashs[counter]]
+                //         )
 
-                    // const { rows: hashPostExist } = await connection.query(`
-                    // SELECT * FROM hashtags_posts h
-                    // WHERE h."postId"=$1 AND h."hashtagId"=$2)`, [postId, hashId])
+                //         hashId = hashExist[0].id
+                //     }
 
-                    // if (hashPostExist.length === 0) {
-                    //     await connection.query(`
-                    //     INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [postId, hashId])
-                    // }
+                //     // const { rows: hashPostExist } = await connection.query(`
+                //     // SELECT * FROM hashtags_posts h
+                //     // WHERE h."postId"=$1 AND h."hashtagId"=$2)`, [postId, hashId])
 
-                    bodyHash = {
-                        id: mypost[0].id
-                    }
-                }
+                //     // if (hashPostExist.length === 0) {
+                //     //     await connection.query(`
+                //     //     INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [postId, hashId])
+                //     // }
 
-                return res.status(201).send(bodyHash)
+                //     bodyHash = {
+                //         id: mypost[0].id
+                //     }
+                // }
+
+                return res.status(201).send(hashExist[0])
             }
             ,
             function (error) { // failure handler
