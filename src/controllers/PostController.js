@@ -103,7 +103,6 @@ export async function CreatePost(req, res) {
     }
 }
 
-
 export async function DeletePost(req, res) {
     try {
         const userId = res.locals.userId
