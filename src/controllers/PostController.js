@@ -79,7 +79,6 @@ export async function CreatePost(req, res) {
                         await PostRepository.insertPostWithHash(bodyHash.idPost, bodyHash.idHash)
                     }
                 }
-
                 return res.status(201).send(body)
             }
             ,
