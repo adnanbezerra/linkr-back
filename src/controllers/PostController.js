@@ -75,9 +75,14 @@ export async function CreatePost(req, res) {
                         hashId = hashExist[0].id
                     }
 
-                    // await connection.query(`
-                    // SELECT * FROM hashtags_posts h
-                    // WHERE h."postId"=$1 AND h."hashtagId"=$2)`, [postId, hashId])
+                    const { rows: hashPostExist } = await connection.query(`
+                    SELECT * FROM hashtags_posts h
+                    WHERE h."postId"=$1 AND h."hashtagId"=$2)`, [postId, hashId])
+
+                    if (hashPostExist.length === 0) {
+                        await connection.query(`
+                        INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [postId, hashId])
+                    }
                 }
 
                 return res.status(201).send('postId')
