@@ -12,7 +12,6 @@ CREATE TABLE posts (
 	"userId" INTEGER NOT NULL REFERENCES "users"("id"),
 	"url" TEXT NOT NULL,
 	"description" TEXT,
-    "hashtags" TEXT,
     "imagePreview" TEXT NOT NULL,
     "titlePreview" TEXT,
     "descriptionPreview" TEXT,

@@ -26,16 +26,10 @@ export async function CreatePost(req, res) {
         let allDescription = description.split(" ");
 
         let arrayHashs = []
-        let stringHashs = ''
-        let onlyDescription = ''
 
         allDescription.map((item) => {
             if (item[0] === '#') {
-                stringHashs += item
                 arrayHashs.push(item)
-            }
-            else {
-                onlyDescription += item + " "
             }
         })
 
@@ -45,8 +39,7 @@ export async function CreatePost(req, res) {
                 const body = {
                     userId: userId,
                     url,
-                    description: onlyDescription,
-                    hashtags: stringHashs,
+                    description,
                     imagePreview: metadata.image,
                     titlePreview: metadata.title,
                     descriptionPreview: metadata.description
