@@ -46,7 +46,7 @@ export async function CreatePost(req, res) {
                     titlePreview: metadata.title,
                     descriptionPreview: metadata.description
                 }
-                await PostRepository.createMyPost(body);
+                await PostRepository.createMyPost(body); 
                 const { rows: mypost } = await PostRepository.getPostByUserAndHash(userId, url, description)
 
                 let bodyHash;
