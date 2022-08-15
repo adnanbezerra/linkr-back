@@ -51,15 +51,33 @@ export async function CreatePost(req, res) {
                     `SELECT * FROM posts
                     WHERE posts."userId"=$1 AND posts.url=$2 AND posts.description=$3`, [userId, url, description])
 
+                const postId = mypost.id
+
                 for (let counter = 0; counter < arrayHashs.length; counter++) {
-                    const { rows: hashExist } = await connection.query(
+                    let { rows: hashExist } = await connection.query(
                         `SELECT * FROM hashtags h
                         WHERE h.name=$1`, [arrayHashs[counter]]
                     )
+
+                    let hashId = hashExist.id
+
                     if (hashExist.length === 0) {
-                        await connection.query(`INSERT INTO hashtags (name) VALUES ($1)`, [arrayHashs[counter]])
+                        await connection.query(`
+                        INSERT INTO hashtags (name) VALUES ($1)`, [arrayHashs[counter]])
+
+                        let { rows: hashExist } = await connection.query(
+                            `SELECT * FROM hashtags h
+                            WHERE h.name=$1`, [arrayHashs[counter]]
+                        )
+
+                        hashId = hashExist.id
                     }
+
+                    await connection.query(`
+                    SELECT * FROM hashtags_posts h
+                    WHERE h."postId"=$1 AND h."hashtagId"=$2)`, [postId, hashId])
                 }
+
                 return res.status(201).send(mypost)
             }
             ,
