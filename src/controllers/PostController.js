@@ -85,8 +85,10 @@ export async function CreatePost(req, res) {
                     bodyHash = {
                         idPost: mypost[0].id,
                         idHash: hashExist[0].id
-
                     }
+
+                    await connection.query(`
+                        INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [bodyHash.idPost, bodyHash.idHash])
                 }
 
                 return res.status(201).send(bodyHash)
