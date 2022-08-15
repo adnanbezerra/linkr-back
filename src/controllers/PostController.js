@@ -92,7 +92,7 @@ export async function CreatePost(req, res) {
                     }
                 }
 
-                return res.status(201).send(bodyHash)
+                return res.status(201).send(body)
             }
             ,
             function (error) { // failure handler
