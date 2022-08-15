@@ -59,8 +59,6 @@ export async function CreatePost(req, res) {
                         WHERE h.name=$1`, [arrayHashs[counter]]
                     )
 
-                    hashId = hashExist[0].id
-
                     if (hashExist.length === 0) {
                         await connection.query(`
                         INSERT INTO hashtags (name) VALUES ($1)`, [arrayHashs[counter]])
@@ -73,9 +71,9 @@ export async function CreatePost(req, res) {
                         hashId = hashExist[0].id
                     }
 
-                    const { rows: hashPostExist } = await connection.query(`
-                    SELECT * FROM hashtags_posts h
-                    WHERE h."postId"=$1 AND h."hashtagId"=$2)`, [postId, hashId])
+                    // const { rows: hashPostExist } = await connection.query(`
+                    // SELECT * FROM hashtags_posts h
+                    // WHERE h."postId"=$1 AND h."hashtagId"=$2)`, [postId, hashId])
 
                     // if (hashPostExist.length === 0) {
                     //     await connection.query(`
