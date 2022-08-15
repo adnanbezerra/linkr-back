@@ -52,9 +52,7 @@ export async function CreatePost(req, res) {
                     WHERE posts."userId"=$1 AND posts.url=$2 AND posts.description=$3`, [userId, url, description])
 
                 const v = {
-                    userId,
-                    url,
-                    mypost: mypost[0].id
+                    id: mypost[0].id
                 }
 
                 // const postId = mypost[0].id
