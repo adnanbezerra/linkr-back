@@ -54,7 +54,7 @@ export async function CreatePost(req, res) {
                 const v = {
                     userId,
                     url,
-                    mypost: mypost.id
+                    mypost: mypost[0].id
                 }
 
                 // const postId = mypost[0].id
