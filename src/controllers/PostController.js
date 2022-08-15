@@ -56,8 +56,10 @@ export async function CreatePost(req, res) {
                         WHERE h.name=$1`, [arrayHashs[0]]
                 )
 
+                let bodyHash
+
                 for (let counter = 0; counter < arrayHashs.length; counter++) {
-                    let bodyHash = ''
+                    bodyHash = ''
 
                     // let { rows: hashExist } = await connection.query(
                     //     `SELECT * FROM hashtags h
