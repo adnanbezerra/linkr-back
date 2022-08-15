@@ -53,13 +53,15 @@ export async function CreatePost(req, res) {
 
                 const postId = mypost.id
 
+                let hashId;
+
                 for (let counter = 0; counter < arrayHashs.length; counter++) {
                     let { rows: hashExist } = await connection.query(
                         `SELECT * FROM hashtags h
                         WHERE h.name=$1`, [arrayHashs[counter]]
                     )
 
-                    let hashId = hashExist.id
+                    hashId = hashExist.id
 
                     if (hashExist.length === 0) {
                         await connection.query(`
@@ -78,7 +80,7 @@ export async function CreatePost(req, res) {
                     // WHERE h."postId"=$1 AND h."hashtagId"=$2)`, [postId, hashId])
                 }
 
-                return res.status(201).send(mypost)
+                return res.status(201).send({ postId, hashId })
             }
             ,
             function (error) { // failure handler
