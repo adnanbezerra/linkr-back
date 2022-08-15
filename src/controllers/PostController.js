@@ -55,6 +55,9 @@ export async function CreatePost(req, res) {
                     id: mypost[0].id
                 }
 
+                await connection.query(`
+                         INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,1)`, [v.id])
+
                 // const postId = mypost[0].id
 
                 // let hashId;
