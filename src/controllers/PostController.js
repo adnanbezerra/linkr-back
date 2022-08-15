@@ -1,7 +1,5 @@
 import PostRepository from '../repository/PostRepository.js'
 
-import connection from '../database/database.js';
-
 import urlMetadata from 'url-metadata'
 
 export async function ShowPosts(req, res) {
