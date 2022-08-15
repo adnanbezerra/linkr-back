@@ -1,5 +1,7 @@
 import PostRepository from '../repository/PostRepository.js'
 
+import connection from '../database/database.js';
+
 import urlMetadata from 'url-metadata'
 
 export async function ShowPosts(req, res) {
@@ -45,10 +47,10 @@ export async function CreatePost(req, res) {
                     descriptionPreview: metadata.description
                 }
                 // await PostRepository.createMyPost(body);
-                // const { rows: mypost } = await connection.query(
-                //     `SELECT * FROM posts
-                //     WHERE posts."userId"=$1 AND posts.url=$2`, [userId, url])
-                return res.status(201).send(body)
+                const { rows: mypost } = await connection.query(
+                    `SELECT * FROM posts
+                    WHERE posts."userId"=$1 AND posts.url=$2`, [userId, url])
+                return res.status(201).send(mypost)
             }
             ,
             function (error) { // failure handler
