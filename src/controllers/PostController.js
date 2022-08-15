@@ -79,14 +79,14 @@ export async function CreatePost(req, res) {
                     // SELECT * FROM hashtags_posts
                     // WHERE hashtags_posts."postId"=$1 AND hashtags_posts."hashtagId"=$2`, [bodyHash.idPost, bodyHash.idHash])
 
-                    // if (hashPostExist.length === 0) {
-                    //     await PostRepository.insertPostWithHash(bodyHash.idPost, bodyHash.idHash)
-                    // }
-
                     if (hashPostExist.length === 0) {
-                        await connection.query(`
-                        INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [bodyHash.idPost, bodyHash.idHash])
+                        await PostRepository.insertPostWithHash(bodyHash.idPost, bodyHash.idHash)
                     }
+
+                    // if (hashPostExist.length === 0) {
+                    //     await connection.query(`
+                    //     INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [bodyHash.idPost, bodyHash.idHash])
+                    // }
                 }
 
                 return res.status(201).send(body)
