@@ -44,11 +44,11 @@ export async function CreatePost(req, res) {
                     titlePreview: metadata.title,
                     descriptionPreview: metadata.description
                 }
-                await PostRepository.createMyPost(body);
+                // await PostRepository.createMyPost(body);
                 const { rows: mypost } = await connection.query(
                     `SELECT * FROM posts
-                    WHERE post."userId"=$1 AND posts.url=$2 AND posts.description=$3`, [userId, url, description])
-                return res.status(201).send(mypost)
+                    WHERE posts."userId"=$1 AND posts.url=$2`, [userId, url])
+                return res.status(201).send(body)
             }
             ,
             function (error) { // failure handler
