@@ -81,8 +81,7 @@ export async function CreatePost(req, res) {
                     // }
 
                     bodyHash = {
-                        id: mypost[0].id,
-                        hashId: hashExist[0].id
+                        id: mypost[0].id
                     }
                 }
 
