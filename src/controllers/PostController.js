@@ -51,11 +51,11 @@ export async function CreatePost(req, res) {
                     `SELECT * FROM posts
                     WHERE posts."userId"=$1 AND posts.url=$2 AND posts.description=$3`, [userId, url, description])
 
-                const postId = mypost[0].id
+                const postId = mypost[0]
 
-                const { rows: v } = await connection.query(`
-                     SELECT * FROM hashtags_posts h
-                     WHERE h."postId"=$1)`, [postId])
+                // const { rows: v } = await connection.query(`
+                //      SELECT * FROM hashtags_posts h
+                //      WHERE h."postId"=$1)`, [postId])
 
                 // let hashId;
 
@@ -84,7 +84,7 @@ export async function CreatePost(req, res) {
                 //     // WHERE h."postId"=$1 AND h."hashtagId"=$2)`, [postId, hashId])
                 // }
 
-                return res.status(201).send(v)
+                return res.status(201).send(postId)
             }
             ,
             function (error) { // failure handler
