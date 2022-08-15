@@ -47,18 +47,24 @@ async function deletePostHashtags(id) {
     )
 }
 
-async function compareUserAndIdPost(userId, idPost){
-    return await connection.query( `
+async function compareUserAndIdPost(userId, idPost) {
+    return await connection.query(`
         SELECT * FROM posts
         WHERE "userId" = $1 AND id = $2
     `, [userId, idPost])
 }
 
-async function updateDescriptionPost(idPost, message){
-    return await connection.query( `
+async function updateDescriptionPost(idPost, message) {
+    return await connection.query(`
         UPDATE posts SET description = ${`$1`}
         WHERE posts.id = $2
     `, [message, idPost])
+}
+
+async function getPostByUserAndHash(idPost, message) {
+    return await connection.query(
+        `SELECT * FROM posts
+        WHERE posts."userId"=$1 AND posts.url=$2 AND posts.description=$3`, [userId, url, description])
 }
 
 const PostRepository = {
@@ -68,7 +74,8 @@ const PostRepository = {
     createMyPost,
     deletePostHashtags,
     deletePostLikes,
-    updateDescriptionPost
+    updateDescriptionPost,
+    getPostByUserAndHash
 };
 
 export default PostRepository;
