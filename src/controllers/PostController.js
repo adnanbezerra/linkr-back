@@ -56,6 +56,11 @@ export async function CreatePost(req, res) {
                         WHERE h.name=$1`, [arrayHashs[0]]
                 )
 
+                const bodyHash = {
+                    idPost: mypost[0].id,
+                    idHash: hashExist[0].id
+                }
+
                 // let bodyHash;
 
                 // for (let counter = 0; counter < arrayHashs.length; counter++) {
@@ -90,7 +95,7 @@ export async function CreatePost(req, res) {
                 //     }
                 // }
 
-                return res.status(201).send(hashExist[0])
+                return res.status(201).send(bodyHash)
             }
             ,
             function (error) { // failure handler
