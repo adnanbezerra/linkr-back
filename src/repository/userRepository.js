@@ -26,3 +26,18 @@ export async function getFollower(id, userId) {
     WHERE f."mainUserId"=$1 AND f."followerId"=$2`, [id, userId]
     );
 }
+
+export async function followUser(id, userId) {
+    return connection.query(`
+    INSERT INTO followers ("mainUserId","followerId")
+    VALUES ($1,$2)`, [id, userId]
+    );
+}
+
+export async function unfollowUser(id, userId) {
+    return connection.query(`
+    DELETE FROM followers f
+    WHERE f."mainUserId"=$1 AND f."followerId"=$2;`
+        , [id, userId]
+    );
+}

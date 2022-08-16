@@ -1,4 +1,4 @@
-import { getUserById, getUserFromName, postUser, getFollower } from "../repository/userRepository.js";
+import { getUserById, getUserFromName, postUser, getFollower, followUser, unfollowUser } from "../repository/userRepository.js";
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -86,6 +86,19 @@ export async function getUserByName(req, res) {
 
 export async function followOrUnfollowUser(req, res) {
     try {
+
+        const userId = res.locals.userId
+        const { id } = req.params
+
+        const { rows: follower } = await getFollower(id, userId);
+
+        if (follower.length === 0) {
+            await followUser(Number(id), userId)
+        }
+        else {
+            await unfollowUser(Number(id), userId)
+        }
+
         return res.sendStatus(200)
     }
     catch {
