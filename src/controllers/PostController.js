@@ -18,7 +18,7 @@ export async function ShowPosts(req, res) {
 }
 
 export async function gettingPostsByUser(req, res) {
-    const{userId} = req.params;
+    const { userId } = req.params;
     try {
         const { rows: posts } = await PostRepository.getPostsbyUser(userId);
 
@@ -35,7 +35,7 @@ export async function CreatePost(req, res) {
     try {
 
         const userId = res.locals.userId;
-        
+
         const { url, description } = req.body
 
 
@@ -45,7 +45,8 @@ export async function CreatePost(req, res) {
 
         allDescription.map((item) => {
             if (item[0] === '#') {
-                arrayHashs.push(item)
+                let trend = item.replace('#', '')
+                arrayHashs.push(trend)
             }
         })
 
@@ -62,7 +63,7 @@ export async function CreatePost(req, res) {
                     descriptionPreview: metadata.description
                 }
 
-                await PostRepository.createMyPost(body); 
+                await PostRepository.createMyPost(body);
                 const { rows: mypost } = await PostRepository.getPostByUserAndHash(userId, url, description)
 
                 let bodyHash;
