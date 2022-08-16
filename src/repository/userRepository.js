@@ -2,7 +2,7 @@ import connection from "../database/database.js";
 import bcrypt from 'bcrypt';
 
 export async function postUser(newUser) {
-    const {name, password, email, imageUrl} = newUser;
+    const { name, password, email, imageUrl } = newUser;
     const encryptedPassword = bcrypt.hashSync(password, 10);
 
     return connection.query(`INSERT INTO users (name, password, email, "imageUrl") VALUES ($1, $2, $3, $4)`, [name, encryptedPassword, email, imageUrl]);
@@ -18,4 +18,11 @@ export async function getUserById(id) {
 
 export async function getUserFromName(name) {
     return connection.query(`SELECT id, name, "imageUrl" FROM users WHERE name ILIKE $1`, [`${name}%`]);
+}
+
+export async function getFollower(id, userId) {
+    return connection.query(`
+    SELECT * FROM followers f
+    WHERE f."mainUserId"=$1 AND f."followerId"=$2`, [id, userId]
+    );
 }

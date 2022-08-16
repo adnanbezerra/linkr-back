@@ -1,4 +1,4 @@
-import { getUserById, getUserFromName, postUser } from "../repository/userRepository.js";
+import { getUserById, getUserFromName, postUser, getFollower } from "../repository/userRepository.js";
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -45,13 +45,22 @@ export async function getUserMe(req, res) {
 
 
 export async function getUser(req, res) {
-    const {id} = req.params;
+    const { id } = req.params;
+    const userId = res.locals.userId;
     try {
-        
-        const {rows: userRows} = await getUserById(id);
+
+        const { rows: userRows } = await getUserById(id);
+        const { rows: follower } = await getFollower(id, userId);
         console.log(userRows);
-        const {name, imageUrl} = userRows[0];
-        const user = {name, imageUrl};
+        const { name, imageUrl } = userRows[0];
+        let user = { name, imageUrl };
+
+        if (follower.length !== 0) {
+            user = { ...user, following: false }
+        }
+        else {
+            user = { ...user, following: true }
+        }
 
         res.status(200).send(user);
     } catch (error) {
