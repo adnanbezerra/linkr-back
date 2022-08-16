@@ -55,7 +55,7 @@ export async function getUser(req, res) {
         const { name, imageUrl } = userRows[0];
         let user = { name, imageUrl };
 
-        if (follower.length !== 0) {
+        if (follower.length === 0) {
             user = { ...user, following: false }
         }
         else {
