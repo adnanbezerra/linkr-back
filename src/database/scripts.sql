@@ -7,7 +7,6 @@ CREATE TABLE users (
 );
 
 
-
 CREATE TABLE posts (
 	"id" SERIAL PRIMARY KEY UNIQUE NOT NULL,
 	"userId" INTEGER NOT NULL REFERENCES "users"("id"),
@@ -17,9 +16,8 @@ CREATE TABLE posts (
     "titlePreview" TEXT,
     "descriptionPreview" TEXT,
 	"createdAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
- );
 
- 
+ );
 
 CREATE TABLE likes(
     id serial primary key,
@@ -32,6 +30,7 @@ CREATE TABLE hashtags (
     id serial primary key,
     name text not null
 );
+
 CREATE TABLE hashtags_posts (
     id serial primary key,
     "postId" integer not null references "posts"("id"),

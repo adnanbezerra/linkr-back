@@ -1,4 +1,4 @@
-import { getUserById, postUser } from "../repository/userRepository.js";
+import { getUserById, getUserFromName, postUser } from "../repository/userRepository.js";
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -32,16 +32,17 @@ export async function postSignin(req, res) {
 export async function getUserMe(req, res) {
     try {
         const id = res.locals.userId;
-        const {rows: userRows} = await getUserById(id);
+        const { rows: userRows } = await getUserById(id);
 
-        const {name, email, imageUrl} = userRows[0];
-        const user = {name, email, imageUrl}
+        const { name, email, imageUrl } = userRows[0];
+        const user = { name, email, imageUrl }
 
         res.status(200).send(user);
     } catch (error) {
         console.error(error);
     }
 }
+
 
 export async function getUser(req, res) {
     const {id} = req.params;
@@ -53,6 +54,22 @@ export async function getUser(req, res) {
         const user = {name, imageUrl};
 
         res.status(200).send(user);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function getUserByName(req, res) {
+    try {
+        const { name } = req.params;
+
+        // não era exatamente necessário um middleware, só isso
+        if (name.length < 3) return res.sendStatus(411);
+
+        const { rows: queryRows } = await getUserFromName(name);
+
+        res.status(200).send(queryRows);
+
     } catch (error) {
         console.error(error);
     }
