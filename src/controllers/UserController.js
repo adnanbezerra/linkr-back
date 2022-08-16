@@ -83,3 +83,12 @@ export async function getUserByName(req, res) {
         console.error(error);
     }
 }
+
+export async function followOrUnfollowUser(req, res) {
+    try {
+        return res.sendStatus(200)
+    }
+    catch {
+        return res.sendStatus(500)
+    }
+}
