@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getUserByName, getUserMe, postSignin, postSignup } from "../controllers/UserController.js";
+import { getUserByName, getUser, getUserMe, postSignin, postSignup } from "../controllers/UserController.js";
 import { ValidateEmailRegister } from "../middlewares/ValidateEmailRegister.js";
 import { ValidateLogin } from "../middlewares/ValidateLogin.js";
 import { validateSchema } from "../middlewares/ValidateSchema.js";
@@ -12,6 +12,7 @@ const router = Router();
 router.post('/signin', validateSchema(LoginSchema), ValidateLogin, postSignin);
 router.post('/signup', validateSchema(RegisterSchema), ValidateEmailRegister, postSignup);
 router.get('/user/me', validatingToken, getUserMe);
+router.get('/user/:id',validatingToken, getUser);
 router.get('/user/:name', getUserByName);
 
 export default router;

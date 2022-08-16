@@ -5,13 +5,22 @@ import connection from "../database/database.js";
 async function getAllPosts(userId) {
     return connection.query(`
     SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
-    posts."descriptionPreview",u.name,u."imageUrl", 
+    posts."descriptionPreview",u.id AS "userId", u.name,u."imageUrl", 
     CASE WHEN posts."userId" = $1 then 'true' else 'false' end "isMyPost"
     FROM posts
     JOIN users u ON u.id=posts."userId" 
-    ORDER BY posts."createdAt" DESC LIMIT 20
-    
-`, [userId])
+    ORDER BY posts."createdAt" DESC`, [userId])
+
+}
+
+async function getPostsbyUser(id) {
+    return connection.query(`
+    SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
+        posts."descriptionPreview",users.id AS "userId",users.name,users."imageUrl"
+        FROM posts
+        JOIN users ON users.id=posts."userId"
+        WHERE users.id = $1
+        ORDER BY posts."createdAt" DESC`,[id]);
 }
 
 async function createMyPost(body) {
@@ -97,6 +106,7 @@ const PostRepository = {
     createMyPost,
     deletePostHashtags,
     deletePostLikes,
+    getPostsbyUser,
     updateDescriptionPost,
     getPostByUserAndHash,
     getHash,

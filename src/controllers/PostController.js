@@ -4,8 +4,10 @@ import urlMetadata from 'url-metadata'
 
 export async function ShowPosts(req, res) {
     try {
+
         const userId = res.locals.userId
         const { rows: allPosts } = await PostRepository.getAllPosts(userId);
+
 
         return res.status(201).send(allPosts)
     }
@@ -15,13 +17,27 @@ export async function ShowPosts(req, res) {
 
 }
 
+export async function gettingPostsByUser(req, res) {
+    const{userId} = req.params;
+    try {
+        const { rows: posts } = await PostRepository.getPostsbyUser(userId);
+
+        return res.status(201).send(posts)
+    }
+    catch {
+        return res.send(500)
+    }
+
+}
+
 export async function CreatePost(req, res) {
 
     try {
 
-        const userId = res.locals.userId
-
+        const userId = res.locals.userId;
+        
         const { url, description } = req.body
+
 
         let allDescription = description.split(" ");
 
@@ -32,6 +48,7 @@ export async function CreatePost(req, res) {
                 arrayHashs.push(item)
             }
         })
+
 
         urlMetadata(url).then(
 
@@ -44,6 +61,7 @@ export async function CreatePost(req, res) {
                     titlePreview: metadata.title,
                     descriptionPreview: metadata.description
                 }
+
                 await PostRepository.createMyPost(body); 
                 const { rows: mypost } = await PostRepository.getPostByUserAndHash(userId, url, description)
 
@@ -80,6 +98,7 @@ export async function CreatePost(req, res) {
                 return res.status(201).send(body)
             }
             ,
+
             function (error) { // failure handler
                 return res.send(error)
             }
