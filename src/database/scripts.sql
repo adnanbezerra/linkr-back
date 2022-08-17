@@ -37,7 +37,7 @@ CREATE TABLE hashtags_posts (
 
 CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
-    "userId" SERIAL NOT NULL REFERENCES users(id),
+    "userId" SERIAL NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     "commentText" TEXT NOT NULL,
-    "postId" SERIAL NOT NULL REFERENCES posts(id)
+    "postId" SERIAL NOT NULL REFERENCES posts(id) ON DELETE CASCADE
 );
