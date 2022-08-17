@@ -1,8 +1,7 @@
-import { getUserById, getUserFromName, postUser, getFollower, followUser, unfollowUser } from "../repository/userRepository.js";
+import { getUserById, getUserFromName, postUser } from "../repository/UserRepository.js";
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
-
 
 export async function postSignup(req, res) {
     const newUser = req.body;
