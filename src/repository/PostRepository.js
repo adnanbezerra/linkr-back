@@ -61,6 +61,7 @@ async function updateDescriptionPost(idPost, message){
     `, [message, idPost])
 }
 
+
 const PostRepository = {
     getAllPosts,
     deletePostById,
