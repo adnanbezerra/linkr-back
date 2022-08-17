@@ -9,7 +9,7 @@ async function getAllPosts(userId) {
     CASE WHEN posts."userId" = $1 then 'true' else 'false' end "isMyPost"
     FROM posts
     JOIN users u ON u.id=posts."userId" 
-    ORDER BY posts."createdAt" DESC`, [userId])
+    ORDER BY posts."createdAt" DESC LIMIT 10`, [userId])
 
 }
 
@@ -20,7 +20,7 @@ async function getPostsbyUser(id) {
         FROM posts
         JOIN users ON users.id=posts."userId"
         WHERE users.id = $1
-        ORDER BY posts."createdAt" DESC`,[id]);
+        ORDER BY posts."createdAt" DESC LIMIT 10`,[id]);
 }
 
 async function createMyPost(body) {

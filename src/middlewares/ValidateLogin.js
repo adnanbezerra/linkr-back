@@ -1,4 +1,4 @@
-import { getUserFromEmail } from "../repository/userRepository.js";
+import { getUserFromEmail } from "../repository/UserRepository.js";
 import bcrypt from 'bcrypt';
 
 export async function ValidateLogin(req, res, next) {

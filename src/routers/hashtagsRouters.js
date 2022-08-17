@@ -2,7 +2,6 @@ import { Router } from 'express';
 import { getPostsByTag, getTagsByPostId, getTrends } from '../controllers/hashTagsControllers.js';
 import { validatingToken } from '../middlewares/ValidateToken.js';
 
-
 const hashtagsRouters = Router();
 
 hashtagsRouters.get('/hashtags/:postId',validatingToken,getTagsByPostId);

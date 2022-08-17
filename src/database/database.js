@@ -21,14 +21,15 @@ const connection = new Pool({
 
 
 // DB HEROKU
-/*
-const databaseConfig = {
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-}
 
-const connection = new Pool(databaseConfig);
-*/
+
+// const databaseConfig = {
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: {
+//     rejectUnauthorized: false
+//   }
+// }
+
+// const connection = new Pool(databaseConfig);
+
 export default connection;

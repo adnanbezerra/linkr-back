@@ -1,8 +1,7 @@
-import { getUserById, getUserFromName, postUser } from "../repository/userRepository.js";
+import { getUserById, getUserFromName, postUser } from "../repository/UserRepository.js";
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
-
 
 export async function postSignup(req, res) {
     const newUser = req.body;
@@ -45,13 +44,22 @@ export async function getUserMe(req, res) {
 
 
 export async function getUser(req, res) {
-    const {id} = req.params;
+    const { id } = req.params;
+    const userId = res.locals.userId;
     try {
-        
-        const {rows: userRows} = await getUserById(id);
+
+        const { rows: userRows } = await getUserById(id);
+        const { rows: follower } = await getFollower(id, userId);
         console.log(userRows);
-        const {name, imageUrl} = userRows[0];
-        const user = {name, imageUrl};
+        const { name, imageUrl } = userRows[0];
+        let user = { name, imageUrl };
+
+        if (follower.length === 0) {
+            user = { ...user, following: false }
+        }
+        else {
+            user = { ...user, following: true }
+        }
 
         res.status(200).send(user);
     } catch (error) {
@@ -72,5 +80,27 @@ export async function getUserByName(req, res) {
 
     } catch (error) {
         console.error(error);
+    }
+}
+
+export async function followOrUnfollowUser(req, res) {
+    try {
+
+        const userId = res.locals.userId
+        const { id } = req.params
+
+        const { rows: follower } = await getFollower(id, userId);
+
+        if (follower.length === 0) {
+            await followUser(Number(id), userId)
+        }
+        else {
+            await unfollowUser(Number(id), userId)
+        }
+
+        return res.sendStatus(200)
+    }
+    catch {
+        return res.sendStatus(500)
     }
 }
