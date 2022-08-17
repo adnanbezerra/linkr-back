@@ -6,10 +6,10 @@ dotenv.config();
 export async function validatingToken(req, res, next) {
 
     try {
-        const {authorization} = req.headers;
+        const { authorization } = req.headers;
         const token = authorization?.replace("Bearer ", "");
         if (!token) {
-            return res.sendStatus(401);
+            return res.send(401);
         }
         const data = jwt.verify(token, process.env.JWT_SECRET);
         if (data) {

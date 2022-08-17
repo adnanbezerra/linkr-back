@@ -37,3 +37,9 @@ CREATE TABLE hashtags_posts (
     "hashtagId" integer not null references "hashtags"("id")
 );
 
+CREATE TABLE followers (
+    id serial primary key,
+    "mainUserId" integer not null references "posts"("id"),
+    "followerId" integer not null references "hashtags"("id"),
+    "followAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
+);
