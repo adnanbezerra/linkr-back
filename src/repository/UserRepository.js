@@ -2,7 +2,7 @@ import connection from "../database/database.js";
 import bcrypt from 'bcrypt';
 
 export async function postUser(newUser) {
-    const {name, password, email, imageUrl} = newUser;
+    const { name, password, email, imageUrl } = newUser;
     const encryptedPassword = bcrypt.hashSync(password, 10);
 
     return connection.query(`INSERT INTO users (name, password, email, "imageUrl") VALUES ($1, $2, $3, $4)`, [name, encryptedPassword, email, imageUrl]);

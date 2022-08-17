@@ -1,4 +1,4 @@
-import { getUserFromEmail } from "../repository/userRepository.js";
+import { getUserFromEmail } from "../repository/UserRepository.js";
 
 export async function ValidateEmailRegister(req, res, next) {
     const { email } = req.body;
