@@ -6,7 +6,7 @@ dotenv.config();
 export async function validatingToken(req, res, next) {
 
     try {
-        const {authorization} = req.headers;
+        const { authorization } = req.headers;
         const token = authorization?.replace("Bearer ", "");
         if (!token) {
             return res.sendStatus(401);
@@ -20,6 +20,7 @@ export async function validatingToken(req, res, next) {
             return res.status(401).send("Erro ao validar o usuário");
         }
     } catch (error) {
+        console.error(error);
         return res.sendStatus(500);
     }
 }

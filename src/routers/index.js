@@ -1,24 +1,25 @@
 import {Router} from 'express';
-import userRouter from './userRouter.js';
+import UserRouter from './UserRouter.js';
 import PostRouter from './PostRouter.js';
 import hashtagsRouters from './hashtagsRouters.js';
 import likeRouter from './LikeRouter.js';
+import CommentsRouter from './CommentsRouter.js';
 const router = Router();
 
 
-// Routers session
-router.use(userRouter);
+// User Router
+router.use(UserRouter);
 
-
-
-// Routers Posts
+// Posts Router
 router.use(PostRouter);
 
-
-// Routers hashtags
+// Hashtags Router
 router.use(hashtagsRouters);
 
-// Routers hashtags
+// Likes Router
 router.use(likeRouter);
+
+// Comments Router
+router.use(CommentsRouter);
 
 export default router;
