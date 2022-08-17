@@ -9,7 +9,7 @@ export async function validatingToken(req, res, next) {
         const { authorization } = req.headers;
         const token = authorization?.replace("Bearer ", "");
         if (!token) {
-            return res.send(401);
+            return res.sendStatus(401);
         }
         const data = jwt.verify(token, process.env.JWT_SECRET);
         if (data) {
@@ -20,6 +20,7 @@ export async function validatingToken(req, res, next) {
             return res.status(401).send("Erro ao validar o usuário");
         }
     } catch (error) {
+        console.error(error);
         return res.sendStatus(500);
     }
 }
