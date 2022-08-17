@@ -42,6 +42,7 @@ CREATE TABLE followers (
     "followAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
 );
 
+-- cascade garante que não vai ter problema de foreign key
 CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
     "userId" SERIAL NOT NULL REFERENCES users(id) ON DELETE CASCADE,

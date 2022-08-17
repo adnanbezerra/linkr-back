@@ -12,6 +12,7 @@ export async function getAllTheComments(postId) {
         JOIN users
         ON users.id=comments."userId"
         WHERE "postId" = $1 
-        GROUP BY comments."commentText",
-        users.name, users.email, users."imageUrl"`, [postId]);
+        GROUP BY comments."commentText", comments.id,
+        users.name, users.email, users."imageUrl"
+        ORDER BY comments.id`, [postId]);
 }
