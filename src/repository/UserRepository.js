@@ -13,7 +13,7 @@ export async function getUserFromEmail(email) {
 }
 
 export async function getUserById(id) {
-    return connection.query(`SELECT * FROM users WHERE id=$1`, [id]);
+    return connection.query(`SELECT id, name, "imageUrl", email FROM users WHERE id=$1`, [id]);
 }
 
 export async function getUserFromName(name) {
