@@ -1,5 +1,5 @@
 import { hashTagsRepository } from "../repository/hashTagsRepository.js";
-import urlMetadata from 'url-metadata';
+
 
 
 export async function getTagsByPostId(req, res) {
