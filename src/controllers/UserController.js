@@ -1,8 +1,9 @@
 
-import { getUserById, getUserFromName, postUser, getFollower, followUser, unfollowUser, getFollowersByName } from "../repository/userRepository.js";
+import { getUserById, getUserFromName, postUser, getFollower, followUser, unfollowUser, getFollowersByName } from "../repository/UserRepository.js";
 
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { getFollowingRows } from "../repository/UserRepository.js";
 dotenv.config();
 
 export async function postSignup(req, res) {
@@ -112,5 +113,19 @@ export async function followOrUnfollowUser(req, res) {
     }
     catch {
         return res.sendStatus(500)
+    }
+}
+
+export async function getFollowing(req, res) {
+    try {
+        const userId = res.locals.userId;
+
+        const { rows: followingRows } = await getFollowingRows(userId);
+
+        return res.status(200).send(followingRows);
+
+    } catch (error) {
+        console.error(error);
+        return res.sendStatus(500);
     }
 }
