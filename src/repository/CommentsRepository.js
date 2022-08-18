@@ -6,13 +6,11 @@ export async function createNewComment({ postId, userId, commentText }) {
 
 export async function getAllTheComments(postId) {
     return connection.query(`
-        SELECT COUNT(comments."userId") as contagem, comments."commentText",
+        SELECT comments."userId" as "commenterId", comments."commentText",
         users.name, users.email, users."imageUrl"
         FROM comments 
         JOIN users
         ON users.id=comments."userId"
         WHERE "postId" = $1 
-        GROUP BY comments."commentText", comments.id,
-        users.name, users.email, users."imageUrl"
         ORDER BY comments.id`, [postId]);
 }
