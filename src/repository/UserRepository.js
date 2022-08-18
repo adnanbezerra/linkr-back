@@ -59,3 +59,12 @@ export async function unfollowUser(id, userId) {
         , [id, userId]
     );
 }
+
+export async function getFollowingRows(id) {
+    return connection.query(`
+        SELECT u.id, u.name, u."imageUrl" FROM users u
+        WHERE u.id!=$1 AND u.name IN (SELECT u.name FROM users u
+        LEFT JOIN followers f ON f."mainUserId"=u.id
+        WHERE f."followerId"=$1)`, [id]
+    )
+}
