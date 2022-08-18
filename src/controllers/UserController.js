@@ -7,7 +7,7 @@ export async function postSignup(req, res) {
     const newUser = req.body;
 
     try {
-        await postUser(newUser);
+        const user = await postUser(newUser);
         res.sendStatus(201);
 
     } catch (error) {
