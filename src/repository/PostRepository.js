@@ -24,7 +24,8 @@ JOIN users u ON u.id = "userId"
     WHERE u.name IN (SELECT u.name FROM users u
     LEFT JOIN followers f ON f."mainUserId"=u.id
     WHERE f."followerId"=$1)) 
-ORDER BY p."createdAt" DESC`, [userId])
+ORDER BY p."createdAt" DESC LIMIT 10`, [userId])
+
 }
 
 async function getPostsbyUser(id) {
@@ -34,7 +35,7 @@ async function getPostsbyUser(id) {
         FROM posts
         JOIN users ON users.id=posts."userId"
         WHERE users.id = $1
-        ORDER BY posts."createdAt" DESC`, [id]);
+        ORDER BY posts."createdAt" DESC LIMIT 10`,[id]);
 }
 
 async function createMyPost(body) {

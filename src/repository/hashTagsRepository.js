@@ -9,7 +9,7 @@ async function getTrends(){
 }
 
 async function getPostsByTag(tagName){
-    return connection.query(`SELECT posts.*, users.name, users."imageUrl" FROM hashtags JOIN hashtags_posts ON hashtags_posts."hashtagId" = hashtags.id JOIN posts ON posts.id = hashtags_posts."postId" JOIN users ON users.id = posts."userId" WHERE hashtags.name = $1 ORDER BY posts."createdAt" DESC LIMIT 20`,[tagName]);
+    return connection.query(`SELECT posts.*, users.name, users."imageUrl" FROM hashtags JOIN hashtags_posts ON hashtags_posts."hashtagId" = hashtags.id JOIN posts ON posts.id = hashtags_posts."postId" JOIN users ON users.id = posts."userId" WHERE hashtags.name = $1 ORDER BY posts."createdAt" DESC LIMIT 10`,[`#${tagName}`]);
 }
 
 export const hashTagsRepository = {

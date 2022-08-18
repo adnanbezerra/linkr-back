@@ -22,6 +22,7 @@ const connection = new Pool({
 
 // DB HEROKU
 
+
 // const databaseConfig = {
 //   connectionString: process.env.DATABASE_URL,
 //   ssl: {

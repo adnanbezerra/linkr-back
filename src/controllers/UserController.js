@@ -1,14 +1,15 @@
+
 import { getUserById, getUserFromName, postUser, getFollower, followUser, unfollowUser, getFollowersByName } from "../repository/userRepository.js";
+
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
-
 
 export async function postSignup(req, res) {
     const newUser = req.body;
 
     try {
-        await postUser(newUser);
+        const user = await postUser(newUser);
         res.sendStatus(201);
 
     } catch (error) {
