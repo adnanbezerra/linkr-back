@@ -6,7 +6,7 @@ export async function createNewComment({ postId, userId, commentText }) {
 
 export async function getAllTheComments(postId) {
     return connection.query(`
-        SELECT COUNT(comments."userId") as contagem, comments."commentText",
+        SELECT comments."userId" as "commenterId", comments."commentText",
         users.name, users.email, users."imageUrl"
         FROM comments 
         JOIN users
