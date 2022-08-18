@@ -6,6 +6,9 @@ export async function ShowPosts(req, res) {
     try {
 
         const userId = res.locals.userId
+        // const { rows: followersIds } = await PostRepository.getFollowersIds(userId);
+        // // const followersPosts = []
+
         const { rows: allPosts } = await PostRepository.getAllPosts(userId);
 
 

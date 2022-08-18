@@ -20,7 +20,7 @@ async function getPostsbyUser(id) {
         FROM posts
         JOIN users ON users.id=posts."userId"
         WHERE users.id = $1
-        ORDER BY posts."createdAt" DESC`,[id]);
+        ORDER BY posts."createdAt" DESC`, [id]);
 }
 
 async function createMyPost(body) {
@@ -99,6 +99,12 @@ async function insertPostWithHash(idPost, idHash) {
     INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [idPost, idHash])
 }
 
+async function getFollowersIds(userId) {
+    return await connection.query(`
+    SELECT f."mainUserId" FROM followers f
+    WHERE f."followerId" = $1`, [userId])
+}
+
 const PostRepository = {
     getAllPosts,
     deletePostById,
@@ -112,7 +118,8 @@ const PostRepository = {
     getHash,
     insertHash,
     getPostWithHash,
-    insertPostWithHash
+    insertPostWithHash,
+    getFollowersIds
 };
 
 export default PostRepository;

@@ -1,4 +1,4 @@
-import { getUserById, getUserFromName, postUser, getFollower, followUser, unfollowUser } from "../repository/userRepository.js";
+import { getUserById, getUserFromName, postUser, getFollower, followUser, unfollowUser, getFollowersByName } from "../repository/userRepository.js";
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -72,12 +72,18 @@ export async function getUserByName(req, res) {
     try {
         const { name } = req.params;
 
+        const userId = res.locals.userId;
+
         // não era exatamente necessário um middleware, só isso
         if (name.length < 3) return res.sendStatus(411);
 
-        const { rows: queryRows } = await getUserFromName(name);
+        const { rows: myFolowers } = await getFollowersByName(userId, name);
 
-        res.status(200).send(queryRows);
+        const { rows: otherFollowers } = await getUserFromName(userId, name);
+
+        const followerSearch = { myFolowers: myFolowers, otherFollowers: otherFollowers }
+
+        res.status(200).send(followerSearch);
 
     } catch (error) {
         console.error(error);
