@@ -6,11 +6,18 @@ export async function ShowPosts(req, res) {
     try {
 
         const userId = res.locals.userId
-        // const { rows: followersIds } = await PostRepository.getFollowersIds(userId);
-        // // const followersPosts = []
+
+        const { rows: haveFriends } = await PostRepository.getFollowersIds(userId);
+
+        if (haveFriends.length === 0) {
+            return res.status(201).send("You don't follow anyone yet. Search for new friends!")
+        }
 
         const { rows: allPosts } = await PostRepository.getAllPosts(userId);
 
+        if (allPosts.length === 0) {
+            return res.status(201).send('No posts found from your friends')
+        }
 
         return res.status(201).send(allPosts)
     }

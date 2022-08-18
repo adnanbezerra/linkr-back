@@ -2,15 +2,29 @@ import connection from "../database/database.js";
 // import urlMetadata from 'url-metadata'
 
 
+// async function getAllPosts(userId) {
+//     return connection.query(`
+//     SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
+//     posts."descriptionPreview",u.id AS "userId", u.name,u."imageUrl", 
+//     CASE WHEN posts."userId" = $1 then 'true' else 'false' end "isMyPost"
+//     FROM posts
+//     JOIN users u ON u.id=posts."userId" 
+//     ORDER BY posts."createdAt" DESC`, [userId])
+// }
+
 async function getAllPosts(userId) {
     return connection.query(`
-    SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
-    posts."descriptionPreview",u.id AS "userId", u.name,u."imageUrl", 
-    CASE WHEN posts."userId" = $1 then 'true' else 'false' end "isMyPost"
-    FROM posts
-    JOIN users u ON u.id=posts."userId" 
-    ORDER BY posts."createdAt" DESC`, [userId])
-
+SELECT p.id,p.url,p.description,p."imagePreview",p."titlePreview",
+p."descriptionPreview",u.id AS "userId", u.name,u."imageUrl",
+CASE WHEN p."userId" = $1 then 'true' else 'false' end "isMyPost"
+FROM posts p
+JOIN users u ON u.id = "userId"
+    WHERE p."userId"=$1 OR p."userId" IN 
+	(SELECT u.id FROM users u
+    WHERE u.name IN (SELECT u.name FROM users u
+    LEFT JOIN followers f ON f."mainUserId"=u.id
+    WHERE f."followerId"=$1)) 
+ORDER BY p."createdAt" DESC`, [userId])
 }
 
 async function getPostsbyUser(id) {
