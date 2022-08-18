@@ -22,7 +22,7 @@ export async function getUserById(id) {
 
 export async function getUserFromName(userId, name) {
     return connection.query(`SELECT u.id, u.name, u."imageUrl" FROM users u
-    WHERE LOWER(u.name) ILIKE LOWER($2) AND u.id!=$1 AND u.id NOT IN (SELECT u.id FROM users u
+    WHERE u.name ILIKE $2 AND u.id!=$1 AND u.id NOT IN (SELECT u.id FROM users u
     LEFT JOIN followers f ON f."mainUserId"=u.id
     WHERE f."followerId"=$1)`,
         [userId, `${name}%`]);
@@ -31,10 +31,10 @@ export async function getUserFromName(userId, name) {
 export async function getFollowersByName(userId, name) {
     return connection.query(`
         SELECT u.id, u.name, u."imageUrl" FROM users u
-        WHERE LOWER(u.name) LIKE LOWER($2) AND u.id!=$1 AND u.id IN (SELECT u.id FROM users u
+        WHERE u.name ILIKE $2 AND u.id!=$1 AND u.id IN (SELECT u.id FROM users u
         LEFT JOIN followers f ON f."mainUserId"=u.id
         WHERE f."followerId"=$1)`,
-        [userId, name]);
+        [userId, `${name}%`]);
     // [`${name}%`, userId]);
 }
 
