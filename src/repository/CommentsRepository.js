@@ -4,9 +4,10 @@ export async function createNewComment({ postId, userId, commentText }) {
     return connection.query(`INSERT INTO comments ("userId", "commentText", "postId") VALUES ($1, $2, $3)`, [userId, commentText, postId]);
 }
 
+// adding a comment
 export async function getAllTheComments(postId) {
     return connection.query(`
-        SELECT COUNT(comments."userId") as contagem, comments."commentText",
+        SELECT comments."userId" as "commenterId", comments."commentText",
         users.name, users.email, users."imageUrl"
         FROM comments 
         JOIN users
