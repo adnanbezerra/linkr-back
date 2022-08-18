@@ -13,7 +13,7 @@ router.post('/signin', validateSchema(LoginSchema), ValidateLogin, postSignin);
 router.post('/signup', validateSchema(RegisterSchema), ValidateEmailRegister, postSignup);
 router.get('/user/me', validatingToken, getUserMe);
 router.get('/user/:id', validatingToken, getUser);
-router.get('/user/:name', validatingToken, getUserByName);
+router.get('/user/profile/:name', validatingToken, getUserByName);
 router.post('/user/:id', validatingToken, followOrUnfollowUser);
 
 export default router;

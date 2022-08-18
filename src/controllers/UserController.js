@@ -47,20 +47,21 @@ export async function getUserMe(req, res) {
 export async function getUser(req, res) {
     const { id } = req.params;
     const userId = res.locals.userId;
-    console.log('entrei')
     try {
 
         const { rows: userRows } = await getUserById(id);
         const { rows: follower } = await getFollower(id, userId);
-        console.log(userRows);
+        // console.log(userRows);
         const { name, imageUrl } = userRows[0];
         let user = { name, imageUrl };
 
-        if (follower.length === 0) {
-            user = { ...user, following: false }
-        }
-        else {
-            user = { ...user, following: true }
+        if (userId !== Number(id)) {
+            if (follower.length === 0) {
+                user = { ...user, following: false }
+            }
+            else {
+                user = { ...user, following: true }
+            }
         }
 
         res.status(200).send(user);
@@ -76,7 +77,7 @@ export async function getUserByName(req, res) {
         const userId = res.locals.userId;
 
         // não era exatamente necessário um middleware, só isso
-        // if (name.length < 3) return res.sendStatus(411);
+        if (name.length < 3) return res.sendStatus(411);
 
         const { rows: myFolowers } = await getFollowersByName(userId, name);
 
