@@ -1,5 +1,5 @@
 
-import { getUserById, getUserFromName, postUser, getFollower, followUser, unfollowUser, getFollowersByName } from "../repository/userRepository.js";
+import { getUserById, getUserFromName, postUser, getFollower, followUser, unfollowUser, getFollowersByName } from "../repository/UserRepository.js";
 
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
