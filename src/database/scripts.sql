@@ -36,3 +36,11 @@ CREATE TABLE hashtags_posts (
     "postId" integer not null references "posts"("id"),
     "hashtagId" integer not null references "hashtags"("id")
 );
+
+
+CREATE TABLE timeline (
+    id serial primary key,
+    "postId" integer not null references "posts"("id"),
+    "userId" integer not null references "users"("id"),
+    "createdAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
+);

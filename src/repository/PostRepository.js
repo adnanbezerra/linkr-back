@@ -17,7 +17,7 @@ async function getAllPosts(userId) {
 async function createMyPost(body) {
     return connection.query(`
     INSERT INTO posts ("userId",url,description,"imagePreview","titlePreview","descriptionPreview")
-    values ($1,$2,$3,$4,$5,$6)`,
+    values ($1,$2,$3,$4,$5,$6) RETURNING id`,
         [body.userId, body.url, body.description, body.imagePreview, body.titlePreview, body.descriptionPreview])
 }
 
@@ -61,6 +61,14 @@ async function updateDescriptionPost(idPost, message){
     `, [message, idPost])
 }
 
+async function insertTimeline(idPost, userId){
+    return await connection.query( `
+        INSERT INTO timeline
+        ("userId", "postId") VALUES ($1, $2)
+    `, [userId, idPost])
+}
+
+
 
 const PostRepository = {
     getAllPosts,
@@ -69,7 +77,8 @@ const PostRepository = {
     createMyPost,
     deletePostHashtags,
     deletePostLikes,
-    updateDescriptionPost
+    updateDescriptionPost,
+    insertTimeline
 };
 
 export default PostRepository;
