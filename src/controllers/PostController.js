@@ -4,17 +4,17 @@ import urlMetadata from 'url-metadata'
 
 export async function ShowPosts(req, res) {
     try {
+    
         const time = req.query.time;
         console.log(time);
         if (time) {
             const userId = res.locals.userId
             const { rows: allPosts } = await PostRepository.getNewPosts(userId, time);
-
-
             return res.status(201).send(allPosts)
         }
+        const cut = req.query.cut;
         const userId = res.locals.userId
-        const { rows: allPosts } = await PostRepository.getAllPosts(userId);
+        const { rows: allPosts } = await PostRepository.getAllPosts(userId, cut);
 
 
         return res.status(201).send(allPosts)
@@ -27,8 +27,9 @@ export async function ShowPosts(req, res) {
 
 export async function gettingPostsByUser(req, res) {
     const { userId } = req.params;
+    const cut = req.query.cut;
     try {
-        const { rows: posts } = await PostRepository.getPostsbyUser(userId);
+        const { rows: posts } = await PostRepository.getPostsbyUser(userId,cut);
 
         return res.status(201).send(posts)
     }

@@ -2,14 +2,14 @@ import connection from "../database/database.js";
 // import urlMetadata from 'url-metadata'
 
 
-async function getAllPosts(userId) {
+async function getAllPosts(userId,cut) {
     return connection.query(`
     SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
     posts."descriptionPreview",u.id AS "userId", u.name,u."imageUrl", 
     CASE WHEN posts."userId" = $1 then 'true' else 'false' end "isMyPost"
     FROM posts
     JOIN users u ON u.id=posts."userId" 
-    ORDER BY posts."createdAt" DESC`, [userId])
+    ORDER BY posts."createdAt" DESC OFFSET $2 LIMIT 10`, [userId,cut])
 
 }
 async function getNewPosts(userId, time) {
@@ -24,14 +24,14 @@ async function getNewPosts(userId, time) {
 
 }
 
-async function getPostsbyUser(id) {
+async function getPostsbyUser(id,cut) {
     return connection.query(`
     SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
         posts."descriptionPreview",users.id AS "userId",users.name,users."imageUrl"
         FROM posts
         JOIN users ON users.id=posts."userId"
         WHERE users.id = $1
-        ORDER BY posts."createdAt" DESC`,[id]);
+        ORDER BY posts."createdAt" DESC OFFSET $2 LIMIT 10`,[id,cut]);
 }
 
 async function createMyPost(body) {
