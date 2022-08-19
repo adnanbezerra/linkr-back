@@ -2,6 +2,9 @@ import connection from "../database/database.js";
 // import urlMetadata from 'url-metadata'
 
 
+
+
+
 // async function getAllPosts(userId) {
 //     return connection.query(`
 //     SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
@@ -12,7 +15,7 @@ import connection from "../database/database.js";
 //     ORDER BY posts."createdAt" DESC`, [userId])
 // }
 
-async function getAllPosts(userId) {
+async function getAllPosts(userId,cut) {
     return connection.query(`
     SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
     posts."descriptionPreview",u.name,u."imageUrl", posts."createdAt",
@@ -31,19 +34,30 @@ async function getAllPosts(userId) {
 	JOIN posts posts2 ON posts2.id = reposts."postId"
 	JOIN users u2 ON u2.id = posts2."userId"
 	JOIN users u3 ON u3.id = reposts."userId"
-	ORDER BY "createdAt" DESC
-`, [userId])
+	ORDER BY "createdAt" DESC OFFSET $2 LIMIT 10`
+, [userId,cut])
+
+}
+async function getNewPosts(userId, time) {
+    return connection.query(`
+    SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
+    posts."descriptionPreview",u.id AS "userId", u.name,u."imageUrl", 
+    CASE WHEN posts."userId" = $1 then 'true' else 'false' end "isMyPost"
+    FROM posts
+    JOIN users u ON u.id=posts."userId"
+    WHERE posts."createdAt" > $2
+    ORDER BY posts."createdAt" DESC `, [userId, time])
 
 }
 
-async function getPostsbyUser(id) {
+async function getPostsbyUser(id,cut) {
     return connection.query(`
     SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
         posts."descriptionPreview",users.id AS "userId",users.name,users."imageUrl"
         FROM posts
         JOIN users ON users.id=posts."userId"
         WHERE users.id = $1
-        ORDER BY posts."createdAt" DESC LIMIT 10`,[id]);
+        ORDER BY posts."createdAt" DESC OFFSET $2 LIMIT 10`,[id,cut]);
 }
 
 async function createMyPost(body) {
@@ -129,11 +143,18 @@ async function insertPostWithHash(idPost, idHash) {
     INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [idPost, idHash])
 }
 
+
+async function getTimeStamp() {
+    return connection.query(`SELECT now() AT TIME ZONE 'UTC6'`);
+}
+
+
 async function getFollowersIds(userId) {
     return await connection.query(`
     SELECT f."mainUserId" FROM followers f
     WHERE f."followerId" = $1`, [userId])
 }
+
 
 
 const PostRepository = {
@@ -150,6 +171,8 @@ const PostRepository = {
     insertHash,
     getPostWithHash,
     insertPostWithHash,
+    getTimeStamp,
+    getNewPosts,
     getFollowersIds
 };
 

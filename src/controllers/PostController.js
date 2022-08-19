@@ -4,16 +4,26 @@ import urlMetadata from 'url-metadata'
 
 export async function ShowPosts(req, res) {
     try {
-
-        const userId = res.locals.userId
-
+    
+        const time = req.query.time;
+        console.log(time);
+        if (time) {
+            const userId = res.locals.userId
+            const { rows: allPosts } = await PostRepository.getNewPosts(userId, time);
+            return res.status(201).send(allPosts)
+        }
         const { rows: haveFriends } = await PostRepository.getFollowersIds(userId);
-
         if (haveFriends.length === 0) {
             return res.status(201).send("You don't follow anyone yet. Search for new friends!")
         }
+        const cut = req.query.cut;
+        const userId = res.locals.userId
+        const { rows: allPosts } = await PostRepository.getAllPosts(userId, cut);
 
-        const { rows: allPosts } = await PostRepository.getAllPosts(userId);
+
+        
+
+        
 
         if (allPosts.length === 0) {
             return res.status(201).send('No posts found from your friends')
@@ -30,8 +40,9 @@ export async function ShowPosts(req, res) {
 
 export async function gettingPostsByUser(req, res) {
     const { userId } = req.params;
+    const cut = req.query.cut;
     try {
-        const { rows: posts } = await PostRepository.getPostsbyUser(userId);
+        const { rows: posts } = await PostRepository.getPostsbyUser(userId,cut);
 
         return res.status(201).send(posts)
     }
@@ -152,4 +163,15 @@ export async function EditPost(req, res){
         res.sendStatus(500)
     }
 
+}
+
+export async function currentTime(req, res) {
+    try {
+        const { rows: timestamp } = await PostRepository.getTimeStamp();
+        console.log(timestamp);
+        return res.send(timestamp[0].timezone)
+    }
+    catch {
+        return res.sendStatus(500)
+    }
 }
