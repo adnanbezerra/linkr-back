@@ -6,6 +6,6 @@ const repostRouter = Router();
 
 
 repostRouter.post('/repost/:idPost', validatingToken, createRepost)
-repostRouter.get('/repost/:idPost', validatingToken,  countRepost)
+repostRouter.get('/repost/:idPost', countRepost)
 
 export default repostRouter;

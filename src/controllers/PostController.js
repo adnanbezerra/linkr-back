@@ -21,7 +21,7 @@ export async function ShowPosts(req, res) {
 
         return res.status(201).send(allPosts)
     }
-    catch {
+    catch(err) {
         console.log(err)
         return res.sendStatus(500)
     }
@@ -36,7 +36,7 @@ export async function gettingPostsByUser(req, res) {
         return res.status(201).send(posts)
     }
     catch {
-        return res.send(500)
+        return res.sendStatus(500)
     }
 
 }

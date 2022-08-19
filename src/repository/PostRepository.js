@@ -17,14 +17,16 @@ async function getAllPosts(userId) {
     SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
     posts."descriptionPreview",u.name,u."imageUrl", posts."createdAt",
     CASE WHEN posts."userId" = $1 then 'true' else 'false' end "isMyPost",
-	coalesce(NULL) as "isRepost"
+	coalesce(NULL) as "isRepost",
+	posts."userId" as "userId"
     FROM posts
     JOIN users u ON u.id=posts."userId" 
 	UNION ALL
 	SELECT posts2.id,posts2.url,posts2.description,posts2."imagePreview",posts2."titlePreview",
     posts2."descriptionPreview",u2.name,u2."imageUrl" , reposts."createdAt",
 	CASE WHEN posts2."userId" = $1 then 'true' else 'false' end "isMyPost",
-	u3.name as "isRepost"
+	u3.name as "isRepost",
+	posts2."userId" as "userId"
 	FROM reposts
 	JOIN posts posts2 ON posts2.id = reposts."postId"
 	JOIN users u2 ON u2.id = posts2."userId"
@@ -127,7 +129,6 @@ async function insertPostWithHash(idPost, idHash) {
     INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [idPost, idHash])
 }
 
-=======
 async function getFollowersIds(userId) {
     return await connection.query(`
     SELECT f."mainUserId" FROM followers f
