@@ -35,10 +35,17 @@ CREATE TABLE hashtags_posts (
     "hashtagId" integer not null references "hashtags"("id")
 );
 
+CREATE TABLE reposts (
+    id serial primary key,
+    "postId" integer not null references "posts"("id"),
+    "userId" integer not null references "users"("id"),
+    "createdAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE followers (
     id serial primary key,
-    "mainUserId" integer not null references "posts"("id"),
-    "followerId" integer not null references "hashtags"("id"),
+    "mainUserId" integer not null references "users"("id"),
+    "followerId" integer not null references "users"("id"),
     "followAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
 );
 

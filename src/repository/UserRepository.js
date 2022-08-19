@@ -16,8 +16,26 @@ export async function getUserById(id) {
     return connection.query(`SELECT id, name, "imageUrl", email FROM users WHERE id=$1`, [id]);
 }
 
-export async function getUserFromName(name) {
-    return connection.query(`SELECT id, name, "imageUrl" FROM users WHERE name ILIKE $1`, [`${name}%`]);
+// export async function getUserFromName(name) {
+//     return connection.query(`SELECT id, name, "imageUrl" FROM users WHERE name ILIKE $1`, [`${name}%`]);
+// }
+
+export async function getUserFromName(userId, name) {
+    return connection.query(`SELECT u.id, u.name, u."imageUrl" FROM users u
+    WHERE u.name ILIKE $2 AND u.id!=$1 AND u.id NOT IN (SELECT u.id FROM users u
+    LEFT JOIN followers f ON f."mainUserId"=u.id
+    WHERE f."followerId"=$1)`,
+        [userId, `${name}%`]);
+}
+
+export async function getFollowersByName(userId, name) {
+    return connection.query(`
+        SELECT u.id, u.name, u."imageUrl" FROM users u
+        WHERE u.name ILIKE $2 AND u.id!=$1 AND u.id IN (SELECT u.id FROM users u
+        LEFT JOIN followers f ON f."mainUserId"=u.id
+        WHERE f."followerId"=$1)`,
+        [userId, `${name}%`]);
+    // [`${name}%`, userId]);
 }
 
 export async function getFollower(id, userId) {
@@ -40,4 +58,13 @@ export async function unfollowUser(id, userId) {
     WHERE f."mainUserId"=$1 AND f."followerId"=$2;`
         , [id, userId]
     );
+}
+
+export async function getFollowingRows(id) {
+    return connection.query(`
+        SELECT u.id, u.name, u."imageUrl" FROM users u
+        WHERE u.id!=$1 AND u.name IN (SELECT u.name FROM users u
+        LEFT JOIN followers f ON f."mainUserId"=u.id
+        WHERE f."followerId"=$1)`, [id]
+    )
 }
