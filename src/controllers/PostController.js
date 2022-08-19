@@ -4,7 +4,15 @@ import urlMetadata from 'url-metadata'
 
 export async function ShowPosts(req, res) {
     try {
+        const time = req.query.time;
+        console.log(time);
+        if (time) {
+            const userId = res.locals.userId
+            const { rows: allPosts } = await PostRepository.getNewPosts(userId, time);
 
+
+            return res.status(201).send(allPosts)
+        }
         const userId = res.locals.userId
         const { rows: allPosts } = await PostRepository.getAllPosts(userId);
 
@@ -142,4 +150,15 @@ export async function EditPost(req, res) {
         res.sendStatus(500)
     }
 
+}
+
+export async function currentTime(req, res) {
+    try {
+        const { rows: timestamp } = await PostRepository.getTimeStamp();
+        console.log(timestamp);
+        return res.send(timestamp[0].timezone)
+    }
+    catch {
+        return res.sendStatus(500)
+    }
 }

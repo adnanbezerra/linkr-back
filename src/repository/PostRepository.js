@@ -9,7 +9,18 @@ async function getAllPosts(userId) {
     CASE WHEN posts."userId" = $1 then 'true' else 'false' end "isMyPost"
     FROM posts
     JOIN users u ON u.id=posts."userId" 
-    ORDER BY posts."createdAt" DESC LIMIT 10`, [userId])
+    ORDER BY posts."createdAt" DESC`, [userId])
+
+}
+async function getNewPosts(userId, time) {
+    return connection.query(`
+    SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
+    posts."descriptionPreview",u.id AS "userId", u.name,u."imageUrl", 
+    CASE WHEN posts."userId" = $1 then 'true' else 'false' end "isMyPost"
+    FROM posts
+    JOIN users u ON u.id=posts."userId"
+    WHERE posts."createdAt" > $2
+    ORDER BY posts."createdAt" DESC `, [userId, time])
 
 }
 
@@ -20,7 +31,7 @@ async function getPostsbyUser(id) {
         FROM posts
         JOIN users ON users.id=posts."userId"
         WHERE users.id = $1
-        ORDER BY posts."createdAt" DESC LIMIT 10`,[id]);
+        ORDER BY posts."createdAt" DESC`,[id]);
 }
 
 async function createMyPost(body) {
@@ -99,6 +110,10 @@ async function insertPostWithHash(idPost, idHash) {
     INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [idPost, idHash])
 }
 
+async function getTimeStamp() {
+    return connection.query(`SELECT now() AT TIME ZONE 'UTC6'`);
+}
+
 const PostRepository = {
     getAllPosts,
     deletePostById,
@@ -112,7 +127,9 @@ const PostRepository = {
     getHash,
     insertHash,
     getPostWithHash,
-    insertPostWithHash
+    insertPostWithHash,
+    getTimeStamp,
+    getNewPosts
 };
 
 export default PostRepository;
