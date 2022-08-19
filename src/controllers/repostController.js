@@ -17,7 +17,7 @@ export async function countRepost(req, res) {
     try {
         const { idPost } = req.params;
         const count = await RepostRepository.countRepost(idPost)
-        res.status(200).send(count)
+        res.status(200).send(count.rows)
     } catch(err) {
         console.log(err)
         res.sendStatus(500)

@@ -127,7 +127,6 @@ async function insertPostWithHash(idPost, idHash) {
     INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [idPost, idHash])
 }
 
-=======
 async function getFollowersIds(userId) {
     return await connection.query(`
     SELECT f."mainUserId" FROM followers f
