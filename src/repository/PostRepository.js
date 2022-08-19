@@ -14,17 +14,23 @@ import connection from "../database/database.js";
 
 async function getAllPosts(userId) {
     return connection.query(`
-SELECT p.id,p.url,p.description,p."imagePreview",p."titlePreview",
-p."descriptionPreview",u.id AS "userId", u.name,u."imageUrl",
-CASE WHEN p."userId" = $1 then 'true' else 'false' end "isMyPost"
-FROM posts p
-JOIN users u ON u.id = "userId"
-    WHERE p."userId"=$1 OR p."userId" IN 
-	(SELECT u.id FROM users u
-    WHERE u.name IN (SELECT u.name FROM users u
-    LEFT JOIN followers f ON f."mainUserId"=u.id
-    WHERE f."followerId"=$1)) 
-ORDER BY p."createdAt" DESC LIMIT 10`, [userId])
+    SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
+    posts."descriptionPreview",u.name,u."imageUrl", posts."createdAt",
+    CASE WHEN posts."userId" = $1 then 'true' else 'false' end "isMyPost",
+	coalesce(NULL) as "isRepost"
+    FROM posts
+    JOIN users u ON u.id=posts."userId" 
+	UNION ALL
+	SELECT posts2.id,posts2.url,posts2.description,posts2."imagePreview",posts2."titlePreview",
+    posts2."descriptionPreview",u2.name,u2."imageUrl" , reposts."createdAt",
+	CASE WHEN posts2."userId" = $1 then 'true' else 'false' end "isMyPost",
+	u3.name as "isRepost"
+	FROM reposts
+	JOIN posts posts2 ON posts2.id = reposts."postId"
+	JOIN users u2 ON u2.id = posts2."userId"
+	JOIN users u3 ON u3.id = reposts."userId"
+	ORDER BY "createdAt" DESC
+`, [userId])
 
 }
 
@@ -41,7 +47,7 @@ async function getPostsbyUser(id) {
 async function createMyPost(body) {
     return connection.query(`
     INSERT INTO posts ("userId",url,description,"imagePreview","titlePreview","descriptionPreview")
-    values ($1,$2,$3,$4,$5,$6)`,
+    values ($1,$2,$3,$4,$5,$6) RETURNING id`,
         [body.userId, body.url, body.description, body.imagePreview, body.titlePreview, body.descriptionPreview])
 }
 
@@ -85,6 +91,13 @@ async function updateDescriptionPost(idPost, message) {
     `, [message, idPost])
 }
 
+async function insertRepost(idPost, userId){
+    return await connection.query( `
+        INSERT INTO reposts
+        ("userId", "postId") VALUES ($1, $2)
+    `, [userId, idPost])
+}
+
 async function getPostByUserAndHash(userId, url, description) {
     return await connection.query(
         `SELECT * FROM posts
@@ -114,11 +127,13 @@ async function insertPostWithHash(idPost, idHash) {
     INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [idPost, idHash])
 }
 
+=======
 async function getFollowersIds(userId) {
     return await connection.query(`
     SELECT f."mainUserId" FROM followers f
     WHERE f."followerId" = $1`, [userId])
 }
+
 
 const PostRepository = {
     getAllPosts,

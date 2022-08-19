@@ -22,6 +22,7 @@ export async function ShowPosts(req, res) {
         return res.status(201).send(allPosts)
     }
     catch {
+        console.log(err)
         return res.sendStatus(500)
     }
 
@@ -59,7 +60,6 @@ export async function CreatePost(req, res) {
                 arrayHashs.push(trend)
             }
         })
-
 
         urlMetadata(url).then(
 
@@ -122,8 +122,8 @@ export async function CreatePost(req, res) {
 }
 
 
-export async function DeletePost(req, res) {
-    try {
+export async function DeletePost(req, res){
+    try{
         const userId = res.locals.userId
         const { idPost } = req.params;
         await PostRepository.deletePostLikes(idPost)
@@ -138,16 +138,16 @@ export async function DeletePost(req, res) {
     }
 }
 
-export async function EditPost(req, res) {
+export async function EditPost(req, res){
     try {
         const userId = res.locals.userId
-        const { message } = req.body;
+        const {message} = req.body;
         const { idPost } = req.params;
         await PostRepository.deletePostHashtags(idPost)
         await PostRepository.updateDescriptionPost(idPost, message)
         const { rows: allPosts } = await PostRepository.getAllPosts(userId);
         res.status(201).send(allPosts)
-    } catch (err) {
+    } catch (err){
         console.log(err)
         res.sendStatus(500)
     }
