@@ -38,7 +38,7 @@ CREATE TABLE hashtags_posts (
 );
 
 
-CREATE TABLE timeline (
+CREATE TABLE reposts (
     id serial primary key,
     "postId" integer not null references "posts"("id"),
     "userId" integer not null references "users"("id"),

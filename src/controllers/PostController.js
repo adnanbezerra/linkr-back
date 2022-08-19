@@ -10,6 +10,7 @@ export async function ShowPosts(req, res) {
         return res.status(201).send(allPosts)
     }
     catch {
+        console.log(err)
         return res.sendStatus(500)
     }
 
@@ -34,8 +35,7 @@ export async function CreatePost(req, res) {
                     titlePreview: metadata.title,
                     descriptionPreview: metadata.description
                 }
-                const idNewPost = await PostRepository.createMyPost(body);
-                await PostRepository.insertTimeline(idNewPost, userId);
+                await PostRepository.createMyPost(body);
                 return res.status(201).send(body)
             }
             ,

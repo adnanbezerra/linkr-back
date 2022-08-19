@@ -20,6 +20,7 @@ export async function validatingToken(req, res, next) {
             return res.status(401).send("Erro ao validar o usuário");
         }
     } catch (error) {
+        console.log(error)
         return res.sendStatus(500);
     }
 }
