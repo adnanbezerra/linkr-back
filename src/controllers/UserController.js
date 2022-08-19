@@ -1,13 +1,16 @@
-import { getUserById, getUserFromName, postUser } from "../repository/UserRepository.js";
+
+import { getUserById, getUserFromName, postUser, getFollower, followUser, unfollowUser, getFollowersByName } from "../repository/UserRepository.js";
+
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { getFollowingRows } from "../repository/UserRepository.js";
 dotenv.config();
 
 export async function postSignup(req, res) {
     const newUser = req.body;
 
     try {
-        await postUser(newUser);
+        const user = await postUser(newUser);
         res.sendStatus(201);
 
     } catch (error) {
@@ -50,15 +53,17 @@ export async function getUser(req, res) {
 
         const { rows: userRows } = await getUserById(id);
         const { rows: follower } = await getFollower(id, userId);
-        console.log(userRows);
+        // console.log(userRows);
         const { name, imageUrl } = userRows[0];
         let user = { name, imageUrl };
 
-        if (follower.length === 0) {
-            user = { ...user, following: false }
-        }
-        else {
-            user = { ...user, following: true }
+        if (userId !== Number(id)) {
+            if (follower.length === 0) {
+                user = { ...user, following: false }
+            }
+            else {
+                user = { ...user, following: true }
+            }
         }
 
         res.status(200).send(user);
@@ -71,12 +76,18 @@ export async function getUserByName(req, res) {
     try {
         const { name } = req.params;
 
+        const userId = res.locals.userId;
+
         // não era exatamente necessário um middleware, só isso
         if (name.length < 3) return res.sendStatus(411);
 
-        const { rows: queryRows } = await getUserFromName(name);
+        const { rows: myFolowers } = await getFollowersByName(userId, name);
 
-        res.status(200).send(queryRows);
+        const { rows: otherFollowers } = await getUserFromName(userId, name);
+
+        const followerSearch = { myFolowers: myFolowers, otherFollowers: otherFollowers }
+
+        res.status(200).send(followerSearch);
 
     } catch (error) {
         console.error(error);
@@ -102,5 +113,19 @@ export async function followOrUnfollowUser(req, res) {
     }
     catch {
         return res.sendStatus(500)
+    }
+}
+
+export async function getFollowing(req, res) {
+    try {
+        const userId = res.locals.userId;
+
+        const { rows: followingRows } = await getFollowingRows(userId);
+
+        return res.status(200).send(followingRows);
+
+    } catch (error) {
+        console.error(error);
+        return res.sendStatus(500);
     }
 }

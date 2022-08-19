@@ -2,6 +2,16 @@ import connection from "../database/database.js";
 // import urlMetadata from 'url-metadata'
 
 
+// async function getAllPosts(userId) {
+//     return connection.query(`
+//     SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
+//     posts."descriptionPreview",u.id AS "userId", u.name,u."imageUrl", 
+//     CASE WHEN posts."userId" = $1 then 'true' else 'false' end "isMyPost"
+//     FROM posts
+//     JOIN users u ON u.id=posts."userId" 
+//     ORDER BY posts."createdAt" DESC`, [userId])
+// }
+
 async function getAllPosts(userId) {
     return connection.query(`
     SELECT posts.id,posts.url,posts.description,posts."imagePreview",posts."titlePreview",
@@ -31,7 +41,7 @@ async function getPostsbyUser(id) {
         FROM posts
         JOIN users ON users.id=posts."userId"
         WHERE users.id = $1
-        ORDER BY posts."createdAt" DESC`,[id]);
+        ORDER BY posts."createdAt" DESC LIMIT 10`,[id]);
 }
 
 async function createMyPost(body) {
@@ -117,6 +127,13 @@ async function insertPostWithHash(idPost, idHash) {
     INSERT INTO hashtags_posts ("postId","hashtagId") VALUES ($1,$2)`, [idPost, idHash])
 }
 
+=======
+async function getFollowersIds(userId) {
+    return await connection.query(`
+    SELECT f."mainUserId" FROM followers f
+    WHERE f."followerId" = $1`, [userId])
+}
+
 
 const PostRepository = {
     getAllPosts,
@@ -131,7 +148,8 @@ const PostRepository = {
     getHash,
     insertHash,
     getPostWithHash,
-    insertPostWithHash
+    insertPostWithHash,
+    getFollowersIds
 };
 
 export default PostRepository;

@@ -44,11 +44,12 @@ CREATE TABLE reposts (
 
 CREATE TABLE followers (
     id serial primary key,
-    "mainUserId" integer not null references "posts"("id"),
-    "followerId" integer not null references "hashtags"("id"),
+    "mainUserId" integer not null references "users"("id"),
+    "followerId" integer not null references "users"("id"),
     "followAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
 );
 
+-- cascade garante que não vai ter problema de foreign key
 CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
     "userId" SERIAL NOT NULL REFERENCES users(id) ON DELETE CASCADE,
