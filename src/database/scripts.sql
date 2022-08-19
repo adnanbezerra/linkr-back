@@ -6,7 +6,6 @@ CREATE TABLE users (
     "imageUrl" text not null
 );
 
---esboço tabela posts
 CREATE TABLE posts (
 	"id" SERIAL PRIMARY KEY UNIQUE NOT NULL,
 	"userId" INTEGER NOT NULL REFERENCES "users"("id"),
@@ -17,8 +16,7 @@ CREATE TABLE posts (
     "descriptionPreview" TEXT,
 	"createdAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
 );
- 
---esboço tabela likes
+
 CREATE TABLE likes(
     id serial primary key,
     "likerId" integer not null references "users"("id"),
@@ -37,10 +35,23 @@ CREATE TABLE hashtags_posts (
     "hashtagId" integer not null references "hashtags"("id")
 );
 
-
 CREATE TABLE reposts (
     id serial primary key,
     "postId" integer not null references "posts"("id"),
     "userId" integer not null references "users"("id"),
     "createdAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE followers (
+    id serial primary key,
+    "mainUserId" integer not null references "posts"("id"),
+    "followerId" integer not null references "hashtags"("id"),
+    "followAt" TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE comments (
+    id SERIAL PRIMARY KEY,
+    "userId" SERIAL NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    "commentText" TEXT NOT NULL,
+    "postId" SERIAL NOT NULL REFERENCES posts(id) ON DELETE CASCADE
 );
