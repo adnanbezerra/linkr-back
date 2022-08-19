@@ -1,5 +1,5 @@
 import { hashTagsRepository } from "../repository/hashTagsRepository.js";
-import urlMetadata from 'url-metadata';
+
 
 
 export async function getTagsByPostId(req, res) {
@@ -23,9 +23,12 @@ export async function getTrends(req,res){
     }
 }
 export async function getPostsByTag(req, res) {
-    const { hashtag } = req.params;
+    
     try {
-        const { rows: posts } = await hashTagsRepository.getPostsByTag(hashtag);
+        const { hashtag } = req.params;
+        const cut = req.query.cut;
+        const { rows: posts } = await hashTagsRepository.getPostsByTag(hashtag,cut);
+        console.log(posts);
         res.send(posts);
     } catch (error) {
         return res.sendStatus(500);
